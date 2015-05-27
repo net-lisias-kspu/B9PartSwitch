@@ -477,38 +477,7 @@ namespace PartSubtypeSwitcher
 
         [KSPField]
         public string nodeMapping = string.Empty;
-        public List<AttachNode> partAttachNodesCached;
         private List<string[]> nodeMappingList = new List<string[]> ();
-        Material nodeMaterial;
-        public static Dictionary<string, List<AttachNode>> nodeReference = new Dictionary<string, List<AttachNode>> ();
-
-        private static AttachNode NodeCreateFromBlueprint (Part part, AttachNode blueprint)
-        {
-            AttachNode node = new AttachNode ();
-            node.attachedPart = null;
-            node.attachedPartId = blueprint.attachedPartId;
-            node.attachMethod = blueprint.attachMethod;
-            node.breakingForce = blueprint.breakingForce;
-            node.breakingTorque = blueprint.breakingTorque;
-            node.contactArea = blueprint.contactArea;
-            node.icon = blueprint.icon;
-            node.id = blueprint.id;
-            node.nodeTransform = blueprint.nodeTransform;
-            node.nodeType = blueprint.nodeType;
-            node.offset = blueprint.offset;
-            node.orientation = blueprint.orientation;
-            node.originalOrientation = blueprint.originalOrientation;
-            node.originalPosition = blueprint.originalPosition;
-            node.originalSecondaryAxis = blueprint.originalSecondaryAxis;
-            node.owner = part;
-            node.position = blueprint.position;
-            node.radius = blueprint.radius;
-            node.requestGate = blueprint.requestGate;
-            node.ResourceXFeed = blueprint.ResourceXFeed;
-            node.secondaryAxis = blueprint.secondaryAxis;
-            node.size = blueprint.size;
-            return node;
-        }
 
         private void NodeOnStart ()
         {
@@ -520,33 +489,6 @@ namespace PartSubtypeSwitcher
                     Debug.Log ("PSSM | NodeOnStart | Node mapping " + a + ": " + nodeConfigurations[a]);
                     string[] nodesInConfiguration = nodeConfigurations[a].Split (',');
                     nodeMappingList.Add (nodesInConfiguration);
-                }
-
-                if (partAttachNodesCached == null || partAttachNodesCached.Count == 0)
-                {
-                    Debug.Log ("PSSM | NodeOnStart | Node reference is empty or null present, therefore the part is brand new, filling the reference list");
-                    for (int i = 0; i < part.attachNodes.Count; ++i) partAttachNodesCached.Add (part.attachNodes[i]);
-                }
-                else
-                {
-                    Debug.Log ("PSSM | NodeOnStart | Node reference is present, therefore the part is a duplicate, clearing active nodes");
-                    part.attachNodes = new List<AttachNode> ();
-                    for (int i = 0; i < partAttachNodesCached.Count; ++i)
-                    {
-                        Debug.Log ("Creating node " + partAttachNodesCached[i].id + " for part type " + part.name);
-                        AttachNode node = NodeCreateFromBlueprint (part, partAttachNodesCached[i]);
-                        part.attachNodes.Add (node);
-                        partAttachNodesCached[i] = node;
-                    }
-                }
-                try
-                {
-                    EditorVesselOverlays vesselOverlays = (EditorVesselOverlays) GameObject.FindObjectOfType (typeof (EditorVesselOverlays));
-                    nodeMaterial = vesselOverlays.CoMmarker.gameObject.renderer.material;
-                }
-                catch (Exception ex)
-                {
-                    Debug.Log ("PSSM | NodeOnStart | Exception while acquiring nodeMaterial: " + ex.ToString ());
                 }
                 NodeRemapForConfiguration (selectedObject);
             }
@@ -561,69 +503,27 @@ namespace PartSubtypeSwitcher
             }
 
             string report = string.Empty;
-            for (int i = 0; i < nodeMappingList[configuration].Length; ++i)
-                report += nodeMappingList[configuration][i] + "; ";
-            Debug.Log ("PSSM | NodeRemapForConfiguration | Nodes: " + partAttachNodesCached.Count + " | Requested node set (" + configuration + "):" + report);
+            for (int i = 0; i < nodeMappingList[configuration].Length; ++i) report += nodeMappingList[configuration][i] + "; ";
+            Debug.Log ("PSSM | NodeRemapForConfiguration | Nodes: " + part.attachNodes.Count + " | Requested node set (" + configuration + "):" + report);
 
-            for (int i = 0; i < partAttachNodesCached.Count; ++i)
+            for (int i = 0, count = part.attachNodes.Count; i < count; ++i)
             {
-                if (nodeMappingList[configuration].Contains<string> (partAttachNodesCached[i].id))
+                if (nodeMappingList[configuration].Contains<string> (part.attachNodes[i].id) && part.attachNodes[i].nodeType == AttachNode.NodeType.Stack)
                 {
-                    Debug.Log ("PSSM | NodeRemapForConfiguration | List contains requested node " + partAttachNodesCached[i].id);
-                    NodeSetState (partAttachNodesCached[i].GetHashCode (), true);
+                    Debug.Log ("PSSM | NodeRemapForConfiguration | Disabling node " + part.attachNodes[i].id);
+                    part.attachNodes[i].nodeType = AttachNode.NodeType.Dock;
+                    part.attachNodes[i].radius = 0.001f;
+                }
+                else if (part.attachNodes[i].nodeType == AttachNode.NodeType.Dock)
+                {
+                    Debug.Log ("PSSM | NodeRemapForConfiguration | Enabling node " + part.attachNodes[i].id);
+                    part.attachNodes[i].nodeType = AttachNode.NodeType.Stack;
+                    part.attachNodes[i].radius = 0.4f;
                 }
                 else
                 {
-                    Debug.Log ("PSSM | NodeRemapForConfiguration | List contains unused node " + partAttachNodesCached[i].id);
-                    NodeSetState (partAttachNodesCached[i].GetHashCode (), false);
+                    Debug.Log ("PSSM | NodeRemapForConfiguration | Node " + part.attachNodes[i].id + " is not affected by this switch");
                 }
-            }
-        }
-
-        public void NodeSetState (int caller, bool state)
-        {
-            int hashcode = caller.GetHashCode ();
-            AttachNode node = partAttachNodesCached.Find (a => a.GetHashCode () == caller.GetHashCode ());
-            if (!state)
-            {
-                if (part.attachNodes.Contains (node))
-                {
-                    Debug.Log ("PSSM | NodeSetState | Node exists, removing " + node.id);
-                    part.attachNodes.Remove (node);
-                }
-                else
-                {
-                    Debug.Log ("PSSM | NodeSetState | Node " + node.id + " is already absent from the active list, no action required");
-                }
-            }
-            else
-            {
-                if (!part.attachNodes.Contains (node))
-                {
-                    Debug.Log ("PSSM | NodeSetState | Node absent, adding " + node.id);
-                    part.attachNodes.Add (node);
-                }
-                else
-                {
-                    Debug.Log ("PSSM | NodeSetState | Node " + node.id + " is already present in the active list, no action required");
-                }
-            }
-        }
-
-        private void NodeCreateVisible (AttachNode node)
-        {
-            if (nodeMaterial != null)
-            {
-                if (node.icon == null)
-                {
-                    node.icon = GameObject.CreatePrimitive (PrimitiveType.Sphere);
-                    node.icon.renderer.material = nodeMaterial;
-                }
-                node.icon.SetActive (true);
-                node.icon.transform.localScale = ((Vector3.one * node.radius) * (node.size != 0 ? (float) node.size : (float) node.size + 0.5f));
-                node.icon.renderer.material.color = XKCDColors.RadioactiveGreen;
-                node.icon.transform.position = (this.part.transform.TransformPoint (node.position));
-                node.icon.renderer.enabled = true;
             }
         }
 
