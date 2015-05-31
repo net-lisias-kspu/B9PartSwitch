@@ -14,11 +14,85 @@ namespace PartSubtypeSwitcher
 
     public class PartSubtypeSwitcherModule: PartModule
     {
+        public const string nodeNameSubtype = "SUBTYPE";
+        public const string nodeNamePresetNode = "PRESET_NODE";
+        public const string nodeNamePresetObject = "PRESET_OBJECT";
+        public const string nodeNamePresetResource = "PRESET_RESOURCE";
+        public const string nodeNamePresetResourceBlock = "PRESET_RESOURCE_CONTAINER";
+
+        public class PresetNode
+        {
+            public int key;
+            public string name;
+        }
+
+        public class PresetObject
+        {
+            public int key;
+            public string name;
+            public Transform t;
+        }
+
+        public class PresetResource
+        {
+            public int key;
+            public string configNodeID;
+            public string name;
+            public List<ResourceContainer> resources = new List<ResourceContainer> ();
+        }
+
+        public class Subtype
+        {
+            public string name;
+            public double massAdded;
+            public double costAdded;
+            public List<int> indexesNodes = new List<int> ();
+            public List<int> indexesObjects = new List<int> ();
+            public List<int> indexesResources = new List<int> ();
+        }
+
+        public class ResourceContainer
+        {
+            public string name;
+            public string configNodeID;
+            public int id;
+            public double amount = 0f;
+            public double amountMax = 0f;
+
+            public ResourceContainer (string _name)
+            {
+                name = _name;
+                id = _name.GetHashCode ();
+            }
+        }
+
+        public Dictionary<int, PresetNode> presetsNode;
+        public Dictionary<int, PresetObject> presetsObject;
+        public Dictionary<int, PresetResource> presetsResource;
+        public List<Subtype> subtypes;
+
+
+        [KSPField]
+        public float massBase = 0.25f;
+
+        [KSPField (isPersistant = true)]
+        public int subtypeSelected = 0;
+
+        [KSPField]
+        public string uiCaptionNext = "Next subtype";
+
+        [KSPField]
+        public string uiCaptionPrev = "Prev subtype";
+
+
+
+
+
+
         #region FieldsMeshSwitching
 
         [KSPField] public int moduleID = 0;
-        [KSPField] public string buttonName = "Next part variant";
-        [KSPField] public string previousButtonName = "Prev part variant";
+
 
         [KSPField] public string objectDisplayNames = string.Empty;
         [KSPField] public bool showPreviousButton = true;
@@ -47,7 +121,6 @@ namespace PartSubtypeSwitcher
         [KSPField] public string resourceAmounts = "100;75,25;200";
         [KSPField] public string initialResourceAmounts = "";
 
-        [KSPField] public float basePartMass = 0.25f;
         [KSPField] public string tankMass = "0;0;0;0";
         [KSPField] public string tankCost = "0; 0; 0; 0";
 
@@ -64,7 +137,7 @@ namespace PartSubtypeSwitcher
         [KSPField (guiActive = false, guiActiveEditor = true, guiName = "Dry mass")]
         public float dryMassInfo = 0f;
 
-        private List<ModularTank> tankList;
+        // private List<Tank> tankList;
         private List<double> weightList;
         private List<double> tankCostList;
 
@@ -111,10 +184,12 @@ namespace PartSubtypeSwitcher
 
         public override void OnStart (PartModule.StartState state)
         {
-            InitializeData ();
+            // LoadConfig ();
             SwitchToObject (selectedObject, false);
-            Events["EventSwitchToNext"].guiName = buttonName;
-            Events["EventSwitchToPrevious"].guiName = previousButtonName;
+
+            Events["EventSwitchToNext"].guiName = uiCaptionNext;
+            Events["EventSwitchToPrevious"].guiName = uiCaptionPrev;
+
             if (!showPreviousButton) Events["EventSwitchToPrevious"].guiActiveEditor = false;
             if (selectedTankSetup == -1)
             {
@@ -135,9 +210,111 @@ namespace PartSubtypeSwitcher
         {
             base.OnLoad (node);
             if (!configLoaded)
-                InitializeData ();
-            configLoaded = true;
+            {
+                presetsNode = new Dictionary<int, PresetNode> ();
+                presetsObject = new Dictionary<int, PresetObject> ();
+                presetsResource = new Dictionary<int, PresetResource> ();
+                subtypes = new List<Subtype> ();
+
+                ConfigNode[] nodesTop = node.GetNodes ();
+                Debug.Log ("PSSM | OnLoad | Found " + nodesTop.Length + " nodes within the module node");
+
+                for (int i = 0; i < nodesTop.Length; ++i)
+                {
+                    ConfigNode nodeTop = nodesTop[i];
+                    if (string.Equals (nodeTop.name, nodeNamePresetNode))
+                    {
+                        PresetNode preset = new PresetNode ();
+                        preset.key = int.Parse (nodeTop.GetValue ("key"));
+                        preset.name = nodeTop.GetValue ("name");
+                        presetsNode.Add (preset.key, preset);
+                        Debug.Log ("PSSM | OnLoad | Node preset found | Key: " + preset.key + " | Name: " + preset.name);
+                    }
+                    else if (string.Equals (nodeTop.name, nodeNamePresetObject))
+                    {
+                        PresetObject preset = new PresetObject ();
+                        preset.key = int.Parse (nodeTop.GetValue ("key"));
+                        preset.name = nodeTop.GetValue ("name");
+                        preset.t = PartSubtypeTools.FindTransform (part.transform, preset.name);
+                        presetsObject.Add (preset.key, preset);
+                        Debug.Log ("PSSM | OnLoad | Object preset found | Key: " + preset.key + " | Name: " + preset.name + " | Object was " + (preset.t == null ? "not found" : "found"));
+                    }
+                    else if (string.Equals (nodeTop.name, nodeNamePresetResource))
+                    {
+                        PresetResource preset = new PresetResource ();
+                        preset.key = int.Parse (nodeTop.GetValue ("key"));
+                        preset.name = nodeTop.GetValue ("name");
+                        preset.configNodeID = nodeTop.id;
+                        preset.resources = new List<ResourceContainer> ();
+                        presetsResource.Add (preset.key, preset);
+                        Debug.Log ("PSSM | OnLoad | Resource preset found | Key: " + preset.key + " | Name: " + preset.name);
+
+                        ConfigNode[] nodesInPreset = nodeTop.GetNodes ();
+                        for (int a = 0; a < nodesInPreset.Length; ++a)
+                        {
+                            ConfigNode nodeInPreset = nodesInPreset[a];
+                            if (string.Equals (nodeInPreset.name, nodeNamePresetResourceBlock))
+                            {
+                                ResourceContainer container = new ResourceContainer (nodeInPreset.GetValue ("name"));
+                                container.amountMax = double.Parse (nodeInPreset.GetValue ("amountMax"));
+                                if (nodeInPreset.HasValue ("amount")) container.amount = double.Parse (nodeInPreset.GetValue ("amount"));
+                                else container.amount = container.amountMax;
+                                preset.resources.Add (container);
+                                Debug.Log ("PSSM | OnLoad | Resource preset container found | Name: " + container.name + " | Amount: " + container.amount);
+                            }
+                        }
+                    }
+                    else if (string.Equals (nodeTop.name, nodeNameSubtype))
+                    {
+                        Subtype subtype = new Subtype ();
+                        subtype.name = nodeTop.GetValue ("name");
+
+                        string indexesNodesRaw = nodeTop.GetValue ("indexesNodes");
+                        string indexesObjectsRaw = nodeTop.GetValue ("indexesObjects");
+                        string indexesResourcesRaw = nodeTop.GetValue ("indexesResources");
+
+                        Debug.Log ("PSSM | OnLoad | Subtype found | Name: " + subtype.name + " | Nodes: " + indexesNodesRaw + " | Objects: " + indexesObjectsRaw + " | Resources: " + indexesResourcesRaw);
+
+                        subtype.indexesNodes = PartSubtypeTools.GetIntListFromField (indexesNodesRaw);
+                        subtype.indexesObjects = PartSubtypeTools.GetIntListFromField (indexesObjectsRaw);
+                        subtype.indexesResources = PartSubtypeTools.GetIntListFromField (indexesResourcesRaw);
+
+                        // Add calculation of added mass and cost here
+                        // based on extracted resource data
+
+                        subtypes.Add (subtype);
+                    }
+                }
+                Debug.Log ("PSSM | OnLoad | Subtype loading complete, total number: " + subtypes.Count);
+                configLoaded = true;
+            }
         }
+
+        public override void OnSave (ConfigNode node)
+        {
+            base.OnSave (node);
+
+            for (int i = 0; i < presetsResource.Count; ++i)
+            {
+                ConfigNode nodeResourcePreset = node.GetNodeID (presetsResource[i].configNodeID);
+                if (nodeResourcePreset != null)
+                {
+                    for (int a = 0; a < presetsResource[i].resources.Count; ++a)
+                    {
+                        ConfigNode nodeResourceContainer = nodeResourcePreset.GetNodeID (presetsResource[i].resources[a].configNodeID);
+                        if (nodeResourceContainer != null)
+                        {
+                            nodeResourceContainer.SetValue ("amount", presetsResource[i].resources[a].amount.ToString (), true);
+                        }
+                        else
+                        {
+                            Debug.Log ("PSSM | OnSave | Resource container node " + a + " not found in resource preset node " + i);
+                        }
+                    }
+                }
+            }
+        }
+
 
         public void InitializeData ()
         {
@@ -145,11 +322,9 @@ namespace PartSubtypeSwitcher
             {
                 updateSymmetry = true;
                 ParseObjectNames ();
-
                 fuelTankSetupList = PartSubtypeTools.ParseIntegers (fuelTankSetups);
                 objectDisplayList = PartSubtypeTools.ParseNames (objectDisplayNames);
                 SetupTankList (false);
-
                 weightList = PartSubtypeTools.ParseDoubles (tankMass);
                 tankCostList = PartSubtypeTools.ParseDoubles (tankCost);
 
@@ -338,6 +513,7 @@ namespace PartSubtypeSwitcher
 
         private void SetupTankInPart (Part currentPart, bool calledByPlayer)
         {
+            /*
             currentPart.Resources.list.Clear ();
             PartResource[] partResources = currentPart.GetComponents<PartResource> ();
             for (int i = 0; i < partResources.Length; i++)
@@ -369,6 +545,7 @@ namespace PartSubtypeSwitcher
             currentPart.Resources.UpdateList ();
             UpdateWeight (currentPart, selectedTankSetup);
             UpdateCost ();
+            */
         }
 
         private float UpdateCost ()
@@ -383,7 +560,7 @@ namespace PartSubtypeSwitcher
         private void UpdateWeight (Part currentPart, int newTankSetup)
         {
             if (newTankSetup < weightList.Count)
-                currentPart.mass = (float) (basePartMass + weightList[newTankSetup]);
+                currentPart.mass = (float) (massBase + weightList[newTankSetup]);
         }
 
         public void Update ()
@@ -394,7 +571,8 @@ namespace PartSubtypeSwitcher
 
         private void SetupTankList (bool calledByPlayer)
         {
-            tankList = new List<ModularTank> ();
+            /*
+            tankList = new List<Tank> ();
             weightList = new List<double> ();
             tankCostList = new List<double> ();
 
@@ -440,12 +618,12 @@ namespace PartSubtypeSwitcher
             string[] tankArray = resourceNames.Split (';');
             for (int tankCount = 0; tankCount < tankArray.Length; tankCount++)
             {
-                ModularTank newTank = new ModularTank ();
+                Tank newTank = new Tank ();
                 tankList.Add (newTank);
                 string[] resourceNameArray = tankArray[tankCount].Split (',');
                 for (int nameCount = 0; nameCount < resourceNameArray.Length; nameCount++)
                 {
-                    PartResourceContainer newResource = new PartResourceContainer (resourceNameArray[nameCount].Trim (' '));
+                    ResourceContainer newResource = new ResourceContainer (resourceNameArray[nameCount].Trim (' '));
                     if (resourceList[tankCount] != null)
                     {
                         if (nameCount < resourceList[tankCount].Count)
@@ -457,6 +635,7 @@ namespace PartSubtypeSwitcher
                     newTank.resources.Add (newResource);
                 }
             }
+            */
         }
 
         public float GetModuleCost ()
@@ -536,6 +715,30 @@ namespace PartSubtypeSwitcher
     public static class PartSubtypeTools
     {
         #region Parsing
+
+        public static List<int> GetIntListFromField (string field)
+        {
+            List<int> integers = new List<int> ();
+            string[] strings = field.Split (',');
+            for (int i = 0; i < strings.Length; ++i)
+            {
+                int integer = int.Parse (strings[i].Trim (' '));
+                integers.Add (integer);
+            }
+            return integers;
+        }
+
+        public static Transform FindTransform (Transform parent, string name)
+        {
+            if (parent.name.Equals (name)) return parent;
+            for (int i = 0; i < parent.childCount; ++i)
+            {
+                Transform child = parent.GetChild (i);
+                Transform result = FindTransform (child, name);
+                if (result != null) return result;
+            }
+            return null;
+        }
 
         public static List<string> ParseNames (string names)
         {
@@ -658,40 +861,5 @@ namespace PartSubtypeSwitcher
         }
 
         #endregion
-    }
-
-
-
-
-    public class ModularTank
-    {
-        public List<PartResourceContainer> resources = new List<PartResourceContainer> ();
-    }
-
-
-
-
-    public class PartResourceContainer
-    {
-        public string name;
-        public int ID;
-        public float ratio;
-        public double currentSupply = 0f;
-        public double amount = 0f;
-        public double maxAmount = 0f;
-
-        public PartResourceContainer (string _name, float _ratio)
-        {
-            name = _name;
-            ID = _name.GetHashCode ();
-            ratio = _ratio;
-        }
-
-        public PartResourceContainer (string _name)
-        {
-            name = _name;
-            ID = _name.GetHashCode ();
-            ratio = 1f;
-        }
     }
 }
