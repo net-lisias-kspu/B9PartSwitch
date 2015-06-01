@@ -7,11 +7,6 @@ using System.Reflection;
 
 namespace PartSubtypeSwitcher
 {
-    /// <summary>
-    /// The class is based primarily on the Firespitter mod FSFuelSwitch and FSMeshSwitch PartModules
-    /// All credit for the implementation of fuel and mesh switching, as well as parsing methods, goes to Andreas Gogstad (Snjo), original developer of the Firespitter mod
-    /// </summary>
-
     public class PartSubtypeSwitcherModule : PartModule, IPartCostModifier
     {
         public const string configNodeSubtype = "SUBTYPE";
@@ -20,6 +15,18 @@ namespace PartSubtypeSwitcher
         public const string configNodePresetResource = "PRESET_RESOURCE";
         public const string configNodePresetResourceContainer = "PRESET_RESOURCE_CONTAINER";
 
+        [Serializable]
+        public class Container
+        {
+            public Dictionary<int, PresetNode> presetsNode;
+            public Dictionary<int, PresetObject> presetsObject;
+            public Dictionary<int, PresetResource> presetsResource;
+            public List<Subtype> subtypes = new List<Subtype> ();
+        }
+
+        public static Dictionary<int, Container> cachedConfigurations = new Dictionary<int, Container> ();
+
+        [Serializable]
         public class PresetNode
         {
             public int key;
@@ -27,6 +34,7 @@ namespace PartSubtypeSwitcher
             public AttachNode reference;
         }
 
+        [Serializable]
         public class PresetObject
         {
             public int key;
@@ -34,6 +42,7 @@ namespace PartSubtypeSwitcher
             public Transform target;
         }
 
+        [Serializable]
         public class PresetResource
         {
             public int key;
@@ -42,6 +51,7 @@ namespace PartSubtypeSwitcher
             public List<ResourceContainer> resources = new List<ResourceContainer> ();
         }
 
+        [Serializable]
         public class Subtype
         {
             public string name;
@@ -52,6 +62,7 @@ namespace PartSubtypeSwitcher
             public int resourceKey = 0;
         }
 
+        [Serializable]
         public class ResourceContainer
         {
             public string name;
@@ -71,17 +82,25 @@ namespace PartSubtypeSwitcher
         public Dictionary<int, PresetObject> presetsObject;
         public Dictionary<int, PresetResource> presetsResource;
 
-        public List<Subtype> subtypes;
+        // public List<int> serializedKeysNode = new List<int> ();
+        // public List<int> serializedKeysObject = new List<int> ();
+        // public List<int> serializedKeysResource = new List<int> ();
+
+        // public List<PresetNode> serializedValuesNode = new List<PresetNode> ();
+        // public List<PresetObject> serializedValuesObject = new List<PresetObject> ();
+        // public List<PresetResource> serializedValuesResource = new List<PresetResource> ();
+
+        public List<Subtype> subtypes = new List<Subtype> ();
         public Subtype subtypeSelected;
+
+        [KSPField (isPersistant = true)]
+        public int subtypeSelectedIndex = -1;
 
         [KSPField]
         public int subtypeGroup = 0;
 
         [KSPField]
         public float massBase = 0.25f;
-
-        [KSPField (isPersistant = true)]
-        public int subtypeSelectedIndex = 0;
 
         [KSPField]
         public string uiCaptionNext = "Next";
@@ -108,6 +127,7 @@ namespace PartSubtypeSwitcher
         public bool configLoaded = false;
 
         private bool initialized = false;
+
         UIPartActionWindow tweakableUI;
 
 
@@ -140,27 +160,27 @@ namespace PartSubtypeSwitcher
 
         #region Overrides
 
-        public override void OnStart (PartModule.StartState state)
-        {
-            StartSubtypeSwitch (subtypeSelectedIndex, false);
-            Events["EventSwitchToNext"].guiName = uiCaptionNext;
-            Events["EventSwitchToPrevious"].guiName = uiCaptionPrev;
-            if (!uiUseSecondButton) Events["EventSwitchToPrevious"].guiActiveEditor = false;
-        }
-
-        public override void OnAwake ()
-        {
-            StartSubtypeSwitch (subtypeSelectedIndex, false);
-        }
 
         public override void OnLoad (ConfigNode node)
         {
+            Debug.Log ("PSSM | OnLoad | Invoked");
             base.OnLoad (node);
             if (!configLoaded)
             {
+                Debug.Log ("PSSM | OnLoad | Config was not loaded yet");
+
                 presetsNode = new Dictionary<int, PresetNode> ();
                 presetsObject = new Dictionary<int, PresetObject> ();
                 presetsResource = new Dictionary<int, PresetResource> ();
+
+                // serializedKeysNode = new List<int> ();
+                // serializedKeysObject = new List<int> ();
+                // serializedKeysResource = new List<int> ();
+
+                // serializedValuesNode = new List<PresetNode> ();
+                // serializedValuesObject = new List<PresetObject> ();
+                // serializedValuesResource = new List<PresetResource> ();
+
                 subtypes = new List<Subtype> ();
 
                 ConfigNode[] nodesTop = node.GetNodes ();
@@ -174,17 +194,23 @@ namespace PartSubtypeSwitcher
                         PresetNode preset = new PresetNode ();
                         preset.key = int.Parse (nodeTop.GetValue ("key"));
                         preset.name = nodeTop.GetValue ("name");
-                        presetsNode.Add (preset.key, preset);
                         Debug.Log ("PSSM | OnLoad | Node preset found | Key: " + preset.key + " | Name: " + preset.name);
+
+                        // serializedKeysNode.Add (preset.key);
+                        // serializedValuesNode.Add (preset);
+                        presetsNode.Add (preset.key, preset);
                     }
                     else if (string.Equals (nodeTop.name, configNodePresetObject))
                     {
                         PresetObject preset = new PresetObject ();
                         preset.key = int.Parse (nodeTop.GetValue ("key"));
                         preset.name = nodeTop.GetValue ("name");
-                        preset.target = PartSubtypeTools.FindTransform (part.transform, preset.name);
-                        presetsObject.Add (preset.key, preset);
+                        // preset.target = PartSubtypeTools.FindTransform (part.transform, preset.name);
                         Debug.Log ("PSSM | OnLoad | Object preset found | Key: " + preset.key + " | Name: " + preset.name + " | Object was " + (preset.target == null ? "not found" : "found"));
+
+                        // serializedKeysObject.Add (preset.key);
+                        // serializedValuesObject.Add (preset);
+                        presetsObject.Add (preset.key, preset);
                     }
                     else if (string.Equals (nodeTop.name, configNodePresetResource))
                     {
@@ -193,8 +219,11 @@ namespace PartSubtypeSwitcher
                         preset.name = nodeTop.GetValue ("name");
                         preset.configNodeID = nodeTop.id;
                         preset.resources = new List<ResourceContainer> ();
-                        presetsResource.Add (preset.key, preset);
                         Debug.Log ("PSSM | OnLoad | Resource preset found | Key: " + preset.key + " | Name: " + preset.name);
+
+                        // serializedKeysResource.Add (preset.key);
+                        // serializedValuesResource.Add (preset);
+                        presetsResource.Add (preset.key, preset);
 
                         ConfigNode[] nodesInPreset = nodeTop.GetNodes ();
                         for (int a = 0; a < nodesInPreset.Length; ++a)
@@ -233,13 +262,40 @@ namespace PartSubtypeSwitcher
                 }
 
                 Debug.Log ("PSSM | OnLoad | Subtype loading complete, total number: " + subtypes.Count);
+
+                int key = part.name.GetHashCode ();
+                if (cachedConfigurations.ContainsKey (key))
+                {
+                    Debug.Log ("PSSM | OnLoad | Cached configurations dictionary already contains key " + key);
+                }
+                else
+                {
+                    Debug.Log ("PSSM | OnLoad | Adding new cached configuration for part type key " + key);
+                    Container container = new Container ();
+                    container.presetsNode = presetsNode;
+                    container.presetsObject = presetsObject;
+                    container.presetsResource = presetsResource;
+                    container.subtypes = subtypes;
+                    cachedConfigurations.Add (key, container);
+                }
+
                 configLoaded = true;
             }
+            else
+            {
+                Debug.Log ("PSSM | OnLoad | Config was already loaded");
+            }
+
+            if (subtypes == null) Debug.Log ("PSSM | OnLoad | Subtype list is null");
+            else Debug.Log ("PSSM | OnLoad | Subtype list contains " + subtypes.Count + " entries");
         }
 
         public override void OnSave (ConfigNode node)
         {
             base.OnSave (node);
+
+            if (subtypes == null) Debug.Log ("PSSM | OnSave | Subtype list is null");
+            else Debug.Log ("PSSM | OnSave | Subtype list contains " + subtypes.Count + " entries");
 
             for (int i = 0; i < presetsResource.Count; ++i)
             {
@@ -262,6 +318,123 @@ namespace PartSubtypeSwitcher
             }
         }
 
+        public override void OnAwake ()
+        {
+            base.OnAwake ();
+            if (subtypes == null) Debug.Log ("PSSM | OnAwake | Subtype list is null");
+            else Debug.Log ("PSSM | OnAwake | Subtype list contains " + subtypes.Count + " entries");
+        }
+
+        public override void OnStart (PartModule.StartState state)
+        {
+            base.OnStart (state);
+            if (subtypes == null) Debug.Log ("PSSM | OnStart | Subtype list is null");
+            else Debug.Log ("PSSM | OnStart | Subtype list contains " + subtypes.Count + " entries");
+            CreatePresetDictionaries ();
+            SetupUI ();
+            StartSubtypeSwitch (subtypeSelectedIndex, false);
+        }
+
+        private void CreatePresetDictionaries ()
+        {
+            int key = part.name.GetHashCode ();
+            if (cachedConfigurations.ContainsKey (key))
+            {
+                Container container = cachedConfigurations[key];
+                presetsNode = container.presetsNode;
+                presetsObject = container.presetsObject;
+                presetsResource = container.presetsResource;
+                subtypes = container.subtypes;
+                Debug.Log ("PSSM | CreatePresetDictionaries | Dictionary entry found | Node presets: " + presetsNode.Count + " | Object presets: " + presetsObject.Count + " | Resource presets: " + presetsResource.Count + " | Subtypes: " + subtypes.Count);
+
+                for (int i = 0; i < presetsNode.Count; ++i)
+                {
+                    for (int a = 0; a < part.attachNodes.Count; ++a)
+                    {
+                        if (string.Equals (part.attachNodes[a].id, presetsNode[i].name))
+                        {
+                            Debug.Log ("PSSM | CreatePresetDictionaries | Found the node " + presetsNode[i].name);
+                            presetsNode[i].reference = part.attachNodes[a];
+                        }
+                    }
+                }
+
+                Transform partTransform = part.gameObject.GetComponent<Transform> ();
+                for (int i = 0; i < presetsObject.Count; ++i)
+                {
+                    presetsObject[i].target = PartSubtypeTools.FindTransform (partTransform, presetsObject[i].name);
+                }
+            }
+            else
+            {
+                Debug.Log ("PSSM | CreatePresetDictionaries | There is no dictionary entry for key " + key);
+            }
+            /*
+            if (serializedKeysNode != null && serializedValuesNode != null)
+            {
+                Debug.Log ("PSSM | CreatePresetDictionaries | Serialized lists found for the node preset dictionary");
+                presetsNode = new Dictionary<int, PresetNode> ();
+                for (int i = 0; i < serializedKeysNode.Count; ++i)
+                {
+                    if (i > serializedValuesNode.Count - 1)
+                    {
+                        Debug.Log ("PSSM | CreatePresetDictionaries | Node preset value list length is too short for index " + i);
+                        break;
+                    }
+                    if (serializedValuesNode[i] == null)
+                    {
+                        Debug.Log ("PSSM | CreatePresetDictionaries | Node preset value list returns null at index " + i);
+                        break;
+                    }
+                    presetsNode.Add (serializedKeysNode[i], serializedValuesNode[i]);
+                }
+            }
+            else
+            {
+                Debug.Log ("PSSM | CreatePresetDictionaries | Serialized lists for the node preset dictionary are missing");
+            }
+
+            if (serializedKeysObject != null && serializedValuesObject != null)
+            {
+                Debug.Log ("PSSM | CreatePresetDictionaries | Serialized lists found for the object preset dictionary");
+                presetsObject = new Dictionary<int, PresetObject> ();
+                for (int i = 0; i < serializedKeysObject.Count; ++i) presetsObject.Add (serializedKeysObject[i], serializedValuesObject[i]);
+            }
+            else
+            {
+                Debug.Log ("PSSM | CreatePresetDictionaries | Serialized lists for the object preset dictionary are missing");
+            }
+
+            if (serializedKeysResource != null && serializedValuesResource != null)
+            {
+                Debug.Log ("PSSM | CreatePresetDictionaries | Serialized lists found for the resource preset dictionary");
+                presetsResource = new Dictionary<int, PresetResource> ();
+                for (int i = 0; i < serializedKeysResource.Count; ++i) presetsResource.Add (serializedKeysResource[i], serializedValuesResource[i]);
+            }
+            else
+            {
+                Debug.Log ("PSSM | CreatePresetDictionaries | Serialized lists for the resource preset dictionary are missing");
+            }
+            */
+        }
+
+        private void SetupUI ()
+        {
+            if (initialized) return;
+            initialized = true;
+
+            Events["EventSwitchToNext"].guiActive = availableInFlight;
+            Events["EventSwitchToNext"].guiActiveEditor = availableInEditor;
+            Events["EventSwitchToNext"].guiName = uiCaptionNext;
+
+            Events["EventSwitchToPrevious"].guiActive = availableInFlight;
+            Events["EventSwitchToPrevious"].guiActiveEditor = availableInEditor;
+            Events["EventSwitchToPrevious"].guiName = uiCaptionPrev;
+
+            if (!uiUseSecondButton) Events["EventSwitchToPrevious"].guiActiveEditor = false;
+        }
+
+
         #endregion
 
 
@@ -277,12 +450,6 @@ namespace PartSubtypeSwitcher
 
         private void StartSubtypeSwitch (int subtypeSelectedIndexNext, bool calledByPlayer)
         {
-            if (!configLoaded)
-            {
-                Debug.Log ("PSSM | SetSubtype | Config was not yet loaded, aborting");
-                return;
-            }
-
             SetSubtype (subtypeSelectedIndexNext, calledByPlayer);
             for (int i = 0; i < part.symmetryCounterparts.Count; i++)
             {
@@ -307,28 +474,59 @@ namespace PartSubtypeSwitcher
 
         private void SetSubtype (int subtypeSelectedIndexNext, bool calledByPlayer)
         {
+            Debug.Log ("PSSM | SetSubtype | Starting the switch to subtype " + subtypeSelectedIndexNext);
+            if (subtypeSelectedIndexNext == -1) subtypeSelectedIndexNext = 0;
             if (subtypeSelectedIndexNext == subtypeSelectedIndex)
             {
-                Debug.Log ("PSSM | SetSubtype | Requested subtype index is already in use");
+                Debug.Log ("PSSM | SetSubtype | Requested subtype index (" + subtypeSelectedIndexNext + ") is already in use");
+                return;
+            }
+            Debug.Log ("PSSM | SetSubtype | Passed check 1");
+            if (!configLoaded)
+            {
+                Debug.Log ("PSSM | SetSubtype | Config was not yet loaded, aborting");
+                return;
+            }
+            Debug.Log ("PSSM | SetSubtype | Passed check 2");
+            if (!HighLogic.LoadedSceneIsFlight && !HighLogic.LoadedSceneIsEditor)
+            {
+                Debug.Log ("PSSM | SetSubtype | Scene is not valid, aborting");
+                return;
+            }
+            Debug.Log ("PSSM | SetSubtype | Passed check 3");
+            if (subtypes == null)
+            {
+                Debug.Log ("PSSM | SetSubtype | Subtype list is null, what the fuck");
+                return;
+            }
+            Debug.Log ("PSSM | SetSubtype | Passed check 4");
+            if (subtypes[subtypeSelectedIndexNext] == null)
+            {
+                Debug.Log ("PSSM | SetSubtype | Requested subtype at index (" + subtypeSelectedIndexNext + ") is null");
                 return;
             }
 
+            SetupUI ();
+            Debug.Log ("PSSM | SetSubtype | Passed initial checks to switch to subtype " + subtypeSelectedIndexNext + " | Registered subtypes: " + subtypes.Count);
             subtypeSelected = subtypes[subtypeSelectedIndexNext];
             subtypeSelectedIndex = subtypeSelectedIndexNext;
             subtypeSelectedNameUI = subtypeSelected.name + " (" + presetsResource[subtypeSelected.resourceKey].name + ")";
 
+            Debug.Log ("PSSM | SetSubtype | Iterating through node presets");
             for (int i = 0; i < presetsNode.Count; ++i)
             {
                 bool used = subtypeSelected.nodeKeys.Contains (presetsNode[i].key);
                 SetNodeState (presetsNode[i], used);
             }
 
+            Debug.Log ("PSSM | SetSubtype | Iterating through object presets");
             for (int i = 0; i < presetsObject.Count; ++i)
             {
                 bool used = subtypeSelected.objectKeys.Contains (presetsObject[i].key);
                 SetObjectState (presetsObject[i], used);
             }
 
+            Debug.Log ("PSSM | SetSubtype | Assigning the resource preset " + subtypeSelected.resourceKey + " (" + presetsResource[subtypeSelected.resourceKey].name + ")");
             AssignResourcePreset (presetsResource[subtypeSelected.resourceKey], calledByPlayer);
             UpdateWeight ();
             UpdateCost ();
@@ -394,12 +592,14 @@ namespace PartSubtypeSwitcher
 
         private void UpdateWeight ()
         {
-            part.mass = massBase + subtypeSelected.massAdded;
+            if (subtypeSelected != null) part.mass = massBase + subtypeSelected.massAdded;
+            else part.mass = massBase;
         }
 
         public void UpdateCost ()
         {
-            uiCaptionAddedCost = subtypeSelected.costAdded;
+            if (subtypeSelected != null) uiCaptionAddedCost = subtypeSelected.costAdded;
+            else uiCaptionAddedCost = 0f;
         }
 
         public void Update ()
