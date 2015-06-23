@@ -37,6 +37,7 @@ namespace PartSubtypeSwitcher
             public string configNodeID;
             public string name;
             public List<ResourceContainer> resources = new List<ResourceContainer> ();
+            public bool saved;
         }
 
         [Serializable]
@@ -75,6 +76,7 @@ namespace PartSubtypeSwitcher
         public List<string> serializedResourceNames;
         public List<string> serializedResourceTypes;
         public List<string> serializedResourceSizes;
+        public List<string> serializedResourceAmounts;
 
         public List<string> serializedSubtypeNames;
         public List<float> serializedSubtypeMassAdded;
@@ -159,11 +161,12 @@ namespace PartSubtypeSwitcher
 
         public override void OnLoad (ConfigNode node)
         {
-            Debug.Log ("PSSM | OnLoad | Invoked");
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Invoked");
             base.OnLoad (node);
-            if (!configLoaded) // !cachedConfigurations.ContainsKey (part.name.GetHashCode ())
+
+            if (!configLoaded)
             {
-                Debug.Log ("PSSM | OnLoad | There is no container for the part type " + part.name + " in the cached configurations dictionary yet");
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Config was not loaded yet, creating serialized lists with all the values");
 
                 serializedNodeKeys = new List<int> ();
                 serializedNodeNames = new List<string> ();
@@ -175,6 +178,7 @@ namespace PartSubtypeSwitcher
                 serializedResourceNames = new List<string> ();
                 serializedResourceTypes = new List<string> ();
                 serializedResourceSizes = new List<string> ();
+                serializedResourceAmounts = new List<string> ();
 
                 serializedSubtypeNames = new List<string> ();
                 serializedSubtypeCostAdded = new List<float> ();
@@ -184,7 +188,7 @@ namespace PartSubtypeSwitcher
                 serializedSubtypeResourceKey = new List<int> ();
 
                 ConfigNode[] nodesTop = node.GetNodes ();
-                Debug.Log ("PSSM | OnLoad | Found " + nodesTop.Length + " nodes within the module node");
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Found " + nodesTop.Length + " nodes within the module node");
 
                 for (int i = 0; i < nodesTop.Length; ++i)
                 {
@@ -196,7 +200,7 @@ namespace PartSubtypeSwitcher
 
                         serializedNodeKeys.Add (key);
                         serializedNodeNames.Add (name);
-                        Debug.Log ("PSSM | OnLoad | Node preset found | Key: " + key + " | Name: " + name);
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Node preset found | Key: " + key + " | Name: " + name);
                     }
                     else if (string.Equals (nodeTop.name, configNodePresetObject))
                     {
@@ -205,7 +209,7 @@ namespace PartSubtypeSwitcher
 
                         serializedObjectKeys.Add (key);
                         serializedObjectNames.Add (name);
-                        Debug.Log ("PSSM | OnLoad | Object preset found | Key: " + key + " | Name: " + name);
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Object preset found | Key: " + key + " | Name: " + name);
                     }
                     else if (string.Equals (nodeTop.name, configNodePresetResource))
                     {
@@ -213,12 +217,14 @@ namespace PartSubtypeSwitcher
                         string name = nodeTop.GetValue ("name");
                         string type = nodeTop.HasValue ("type") ? nodeTop.GetValue ("type") : "none";
                         string size = nodeTop.HasValue ("size") ? nodeTop.GetValue ("size") : "none";
+                        string amount = nodeTop.HasValue ("amount") ? nodeTop.GetValue ("amount") : "none";
 
                         serializedResourceKeys.Add (key);
                         serializedResourceNames.Add (name);
                         serializedResourceTypes.Add (type);
                         serializedResourceSizes.Add (size);
-                        Debug.Log ("PSSM | OnLoad | Resource preset found | Key: " + key + " | Name: " + name + " | Type: " + type + " | Size: " + size);
+                        serializedResourceAmounts.Add (amount);
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Resource preset found | Key: " + key + " | Name: " + name + " | Type: " + type + " | Size: " + size + " | Amount: " + amount);
                     }
                     if (string.Equals (nodeTop.name, configNodeSubtype))
                     {
@@ -235,42 +241,193 @@ namespace PartSubtypeSwitcher
                         serializedSubtypeResourceKey.Add (resourceKey);
                         serializedSubtypeCostAdded.Add (costAdded);
                         serializedSubtypeMassAdded.Add (massAdded);
-                        Debug.Log ("PSSM | OnLoad | Subtype found | Name: " + name + " | Nodes: " + nodeKeys + " | Objects: " + objectKeys + " | Resource preset: " + resourceKey);
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Subtype found | Name: " + name + " | Nodes: " + nodeKeys + " | Objects: " + objectKeys + " | Resource preset: " + resourceKey);
                     }
                 }
 
-                Debug.Log ("PSSM | OnLoad | Subtype loading complete, total number: " + serializedSubtypeNames.Count);
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Config loading complete");
                 configLoaded = true;
             }
             else
             {
-                Debug.Log ("PSSM | OnLoad | Config was already loaded");
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Config was already loaded, updating only resource amounts");
+
+                serializedResourceAmounts = new List<string> ();
+
+                ConfigNode[] nodesTop = node.GetNodes ();
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Found " + nodesTop.Length + " nodes within the module node");
+
+                for (int i = 0; i < nodesTop.Length; ++i)
+                {
+                    ConfigNode nodeTop = nodesTop[i];
+                    if (string.Equals (nodeTop.name, configNodePresetResource))
+                    {
+                        int key = int.Parse (nodeTop.GetValue ("key"));
+                        string amount = nodeTop.HasValue ("amount") ? nodeTop.GetValue ("amount") : "none";
+
+                        serializedResourceAmounts.Add (amount);
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnLoad | Resource preset found | Key: " + key + " | Name: " + name + " | Amount: " + amount);
+                    }
+                }
+
+                ParseSerializedLists ();
+                SetupUI ();
+                StartSubtypeSwitch (subtypeSelectedIndex, false);
             }
         }
 
         public override void OnSave (ConfigNode node)
         {
             base.OnSave (node);
+            ReportOnModelState ("OnSave");
+            SaveResourceAmountToPreset ();
+
+            foreach (KeyValuePair<int, PresetResource> entry in presetsResource)
+            {
+                entry.Value.saved = false;
+            }
+
+            ConfigNode[] nodesTop = node.GetNodes ();
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnSave | Found " + nodesTop.Length + " nodes within the module node");
+
+            for (int i = 0; i < nodesTop.Length; ++i)
+            {
+                ConfigNode nodeTop = nodesTop[i];
+                if (string.Equals (nodeTop.name, configNodePresetResource))
+                {
+                    int key = int.Parse (nodeTop.GetValue ("key"));
+                    string name = nodeTop.GetValue ("name");
+                    // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnSave | Resource preset node found | Key: " + key + " | Name: " + name);
+
+                    PresetResource preset = presetsResource[key];
+                    preset.saved = true;
+
+                    string amount = string.Empty;
+                    List<ResourceContainer> containers = preset.resources;
+                    for (int a = 0; a < containers.Count; ++a)
+                    {
+                        if (amount.Length > 0) amount += ",";
+                        amount += containers[a].amount;
+                    }
+
+                    if (amount.Length > 0)
+                    {
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnSave | Node " + i + " (key " + key + ", name " + name + ") receives the following amount string: " + amount);
+                        nodeTop.SetValue ("amount", amount, true);
+                    }
+                    else
+                    {
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnSave | Node " + i + " (key " + key + ", name " + name + ") has no resources");
+                    }
+                }
+            }
+
+            foreach (KeyValuePair<int, PresetResource> entry in presetsResource)
+            {
+                PresetResource preset = entry.Value;
+                if (!preset.saved)
+                {
+                    // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnSave | Preset " + preset.key + " (" + preset.name + ") is not marked as saved, indicating absence of a config node");
+                    ConfigNode nodePreset = new ConfigNode (configNodePresetResource);
+
+                    string amount = string.Empty;
+                    List<ResourceContainer> containers = preset.resources;
+                    for (int a = 0; a < containers.Count; ++a)
+                    {
+                        if (amount.Length > 0) amount += ",";
+                        amount += containers[a].amount;
+                    }
+
+                    nodePreset.AddValue ("key", preset.key.ToString ());
+                    nodePreset.AddValue ("name", preset.name);
+
+                    if (amount.Length > 0)
+                    {
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnSave | New config node receives the following amount string: " + amount);
+                        nodePreset.SetValue ("amount", amount, true);
+                    }
+                    else
+                    {
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnSave | New config node has no resources");
+                    }
+
+                    node.AddNode (nodePreset);
+                    preset.saved = true;
+                }
+                else
+                {
+                    // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnSave | Preset " + preset.key + " (" + preset.name + ") is marked as saved");
+                }
+            }
+        }
+
+        private void SaveResourceAmountToPreset ()
+        {
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SaveResourceAmountToPreset | Invoked");
+            
+            if (subtypeSelected == null || subtypeSelectedIndex == -1)
+            {
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SaveResourceAmountToPreset | There is no selected subtype, aborting...");
+                return;
+            }
+
+            List<ResourceContainer> resourcesPreset = presetsResource[subtypeSelected.resourceKey].resources;
+            List<PartResource> resourcesPart = part.Resources.list;
+
+            if (resourcesPreset.Count != resourcesPart.Count)
+            {
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SaveResourceAmountToPreset | Preset has different number of resources (" + resourcesPreset.Count + ") from the number of resources in the part (" + resourcesPart.Count + "), which should not happen with correctly executed setup.");
+                return;
+            }
+
+            if (resourcesPreset.Count == 0 && resourcesPart.Count == 0)
+            {
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SaveResourceAmountToPreset | No resources used in the current preset or exist on the part");
+                return;
+            }
+
+            for (int i = 0; i < resourcesPreset.Count; ++i)
+            {
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SaveResourceAmountToPreset | Resource " + i + " (" + resourcesPreset[i].name + ") | Amount before/after: " + resourcesPreset[i].amount + " > " + resourcesPart[i].amount);
+                resourcesPreset[i].amount = resourcesPart[i].amount;
+            }
         }
 
         public override void OnStart (PartModule.StartState state)
         {
             base.OnStart (state);
-            if (subtypes == null) Debug.Log ("PSSM | OnStart | Subtype list is null");
-            else Debug.Log ("PSSM | OnStart | Subtype list contains " + subtypes.Count + " entries");
+
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | OnStart | Invoked");
             ParseSerializedLists ();
             SetupUI ();
             StartSubtypeSwitch (subtypeSelectedIndex, false);
         }
 
+        private void ReportOnModelState (string caller)
+        {
+            string report = "PSSM | " + debugCounter.ToString ("0000") + " | " + caller + " | Model state: \n";
+            report += "Subtypes: " + (subtypes == null ? "null" : subtypes.Count.ToString ()) + "\n";
+            report += "Node presets: " + (presetsNode == null ? "null" : presetsNode.Count.ToString ()) + "\n";
+            report += "Object presets: " + (presetsObject == null ? "null" : presetsObject.Count.ToString ()) + "\n";
+            report += "Resource presets: " + (presetsResource == null ? "null" : presetsResource.Count.ToString ()) + "\n";
+            // Debug.Log (report);
+        }
+
         private void ParseSerializedLists ()
         {
+            ReportOnModelState ("ParseSerializedLists");
+            if (presetsNode != null && presetsObject != null && presetsResource != null && subtypes != null)
+            {
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | ParseSerializedLists | Looks like all presets and subtypes were already loaded, aborting the method");
+                return;
+            }
+
             presetsNode = new Dictionary<int, PresetNode> ();
             presetsObject = new Dictionary<int, PresetObject> ();
             presetsResource = new Dictionary<int, PresetResource> ();
             subtypes = new List<Subtype> ();
 
-            Debug.Log ("PSSM | ParseSerializedLists | Node presets found: " + serializedNodeKeys.Count);
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | ParseSerializedLists | Node presets found: " + serializedNodeKeys.Count);
             for (int i = 0; i < serializedNodeKeys.Count; ++i)
             {
                 PresetNode preset = new PresetNode ();
@@ -280,7 +437,7 @@ namespace PartSubtypeSwitcher
                 presetsNode.Add (preset.key, preset);
             }
 
-            Debug.Log ("PSSM | ParseSerializedLists | Object presets found: " + serializedObjectKeys.Count);
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | ParseSerializedLists | Object presets found: " + serializedObjectKeys.Count);
             for (int i = 0; i < serializedObjectKeys.Count; ++i)
             {
                 PresetObject preset = new PresetObject ();
@@ -290,31 +447,40 @@ namespace PartSubtypeSwitcher
                 presetsObject.Add (preset.key, preset);
             }
 
-            Debug.Log ("PSSM | ParseSerializedLists | Resource presets found: " + serializedResourceKeys.Count);
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | ParseSerializedLists | Resource presets found: " + serializedResourceKeys.Count);
             for (int i = 0; i < serializedResourceKeys.Count; ++i)
             {
-                Debug.Log ("PSSM | ParseSerializedLists | Resource loop " + i);
                 PresetResource preset = new PresetResource ();
                 preset.key = serializedResourceKeys[i];
                 preset.name = serializedResourceNames[i];
                 presetsResource.Add (preset.key, preset);
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | ParseSerializedLists | Writing resource preset | Key: " + preset.key + " | Name: " + preset.name + " | Config node ID: " + preset.configNodeID);
 
                 if (!string.Equals ("none", serializedResourceTypes[i]))
                 {
                     string[] types = serializedResourceTypes[i].Split (',');
                     string[] sizes = serializedResourceSizes[i].Split (',');
+                    string[] amounts = serializedResourceAmounts[i].Split (',');
+
+                    bool useAmounts = false;
+                    if (!string.Equals (serializedResourceAmounts[i], "none"))
+                    {
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | ParseSerializedLists | Resource preset " + preset.name + " has amount listed: " + serializedResourceAmounts[i]);
+                        useAmounts = true;
+                    }
+
                     for (int a = 0; a < types.Length; ++a)
                     {
-                        Debug.Log ("PSSM | ParseSerializedLists | Found resource type: " + types[a] + " with max amount of " + sizes[a]);
+                        // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | ParseSerializedLists | Found resource type: " + types[a] + " with max amount of " + sizes[a]);
                         ResourceContainer container = new ResourceContainer (types[a]);
                         container.maxAmount = double.Parse (sizes[a]);
-                        container.amount = container.maxAmount;
+                        container.amount = useAmounts ? double.Parse (amounts[a]) : container.maxAmount;
                         preset.resources.Add (container);
                     }
                 }
             }
 
-            Debug.Log ("PSSM | ParseSerializedLists | Subtypes found: " + serializedSubtypeNames.Count);
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | ParseSerializedLists | Subtypes found: " + serializedSubtypeNames.Count);
             for (int i = 0; i < serializedSubtypeNames.Count; ++i)
             {
                 Subtype subtype = new Subtype ();
@@ -384,59 +550,52 @@ namespace PartSubtypeSwitcher
 
         private void SetSubtype (int subtypeSelectedIndexNext, bool calledByPlayer)
         {
-            Debug.Log ("PSSM | SetSubtype | Starting the switch to subtype " + subtypeSelectedIndexNext);
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetSubtype | Starting the switch to subtype " + subtypeSelectedIndexNext);
             if (subtypeSelectedIndexNext == -1) subtypeSelectedIndexNext = 0;
-            if (subtypeSelectedIndexNext == subtypeSelectedIndex)
-            {
-                Debug.Log ("PSSM | SetSubtype | Requested subtype index (" + subtypeSelectedIndexNext + ") is already in use");
-                return;
-            }
-            Debug.Log ("PSSM | SetSubtype | Passed check 1");
             if (!configLoaded)
             {
-                Debug.Log ("PSSM | SetSubtype | Config was not yet loaded, aborting");
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetSubtype | Config was not yet loaded, aborting");
                 return;
             }
-            Debug.Log ("PSSM | SetSubtype | Passed check 2");
             if (!HighLogic.LoadedSceneIsFlight && !HighLogic.LoadedSceneIsEditor)
             {
-                Debug.Log ("PSSM | SetSubtype | Scene is not valid, aborting");
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetSubtype | Scene is not valid, aborting");
                 return;
             }
-            Debug.Log ("PSSM | SetSubtype | Passed check 3");
             if (subtypes == null)
             {
-                Debug.Log ("PSSM | SetSubtype | Subtype list is null, what the fuck");
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetSubtype | Subtype list is null, what the fuck");
                 return;
             }
-            Debug.Log ("PSSM | SetSubtype | Passed check 4");
             if (subtypes[subtypeSelectedIndexNext] == null)
             {
-                Debug.Log ("PSSM | SetSubtype | Requested subtype at index (" + subtypeSelectedIndexNext + ") is null");
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetSubtype | Requested subtype at index (" + subtypeSelectedIndexNext + ") is null");
                 return;
             }
 
             SetupUI ();
-            Debug.Log ("PSSM | SetSubtype | Passed initial checks to switch to subtype " + subtypeSelectedIndexNext + " | Registered subtypes: " + subtypes.Count);
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetSubtype | Passed initial checks to switch to subtype " + subtypeSelectedIndexNext + " | Registered subtypes: " + subtypes.Count);
+
+            SaveResourceAmountToPreset ();
             subtypeSelected = subtypes[subtypeSelectedIndexNext];
             subtypeSelectedIndex = subtypeSelectedIndexNext;
-            subtypeSelectedNameUI = subtypeSelected.name + " (" + presetsResource[subtypeSelected.resourceKey].name + ")";
+            subtypeSelectedNameUI = subtypeSelectedIndex + "/" + subtypes.Count + ": " + subtypeSelected.name + " (" + presetsResource[subtypeSelected.resourceKey].name + ")";
 
-            Debug.Log ("PSSM | SetSubtype | Iterating through node presets");
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetSubtype | Iterating through node presets");
             for (int i = 0; i < presetsNode.Count; ++i)
             {
                 bool used = subtypeSelected.nodeKeys.Contains (presetsNode[i].key);
                 SetNodeState (presetsNode[i], used);
             }
 
-            Debug.Log ("PSSM | SetSubtype | Iterating through object presets");
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetSubtype | Iterating through object presets");
             for (int i = 0; i < presetsObject.Count; ++i)
             {
                 bool used = subtypeSelected.objectKeys.Contains (presetsObject[i].key);
                 SetObjectState (presetsObject[i], used);
             }
 
-            Debug.Log ("PSSM | SetSubtype | Assigning the resource preset " + subtypeSelected.resourceKey + " (" + presetsResource[subtypeSelected.resourceKey].name + ")");
+            // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetSubtype | Assigning the resource preset " + subtypeSelected.resourceKey + " (" + presetsResource[subtypeSelected.resourceKey].name + ")");
             AssignResourcePreset (presetsResource[subtypeSelected.resourceKey], calledByPlayer);
             UpdateWeight ();
             UpdateCost ();
@@ -446,24 +605,24 @@ namespace PartSubtypeSwitcher
         {
             if (preset.reference == null)
             {
-                Debug.Log ("PSSM | SetNodeState | Node reference in node preset " + preset.key + " is null, aborting the switch");
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetNodeState | Node reference in node preset " + preset.key + " is null, aborting the switch");
                 return;
             }
             if (!used && preset.reference.nodeType == AttachNode.NodeType.Stack)
             {
-                Debug.Log ("PSSM | SetNodeState | Disabling node " + preset.reference.id);
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetNodeState | Disabling node " + preset.reference.id);
                 preset.reference.nodeType = AttachNode.NodeType.Dock;
                 preset.reference.radius = 0.001f;
             }
             else if (preset.reference.nodeType == AttachNode.NodeType.Dock)
             {
-                Debug.Log ("PSSM | SetNodeState | Enabling node " + preset.reference.id);
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetNodeState | Enabling node " + preset.reference.id);
                 preset.reference.nodeType = AttachNode.NodeType.Stack;
                 preset.reference.radius = 0.4f;
             }
             else
             {
-                Debug.Log ("PSSM | SetSubtype | Node " + preset.reference.id + " is not affected by this switch");
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetSubtype | Node " + preset.reference.id + " is not affected by this switch");
             }
         }
 
@@ -471,7 +630,7 @@ namespace PartSubtypeSwitcher
         {
             if (preset.target == null)
             {
-                Debug.Log ("PSSM | SetNodeState | Transform reference in object preset " + preset.key + " is null, aborting the switch");
+                // Debug.Log ("PSSM | " + debugCounter.ToString ("0000") + " | SetNodeState | Transform reference in object preset " + preset.key + " is null, aborting the switch");
                 return;
             }
             preset.target.gameObject.SetActive (used);
@@ -510,8 +669,12 @@ namespace PartSubtypeSwitcher
             else uiCaptionAddedCost = 0f;
         }
 
+        private int debugCounter = 0;
+
         public void Update ()
         {
+            debugCounter += 1;
+            if (debugCounter > 1000) debugCounter = 0;
             if (HighLogic.LoadedSceneIsEditor)
                 uiCaptionDryMass = part.mass;
         }
@@ -558,7 +721,7 @@ namespace PartSubtypeSwitcher
                 Transform result = FindTransform (child, name, false);
                 if (result != null)
                 {
-                    if (reportSuccess) Debug.Log ("PSSM | FindTransform | Found the transform " + name);
+                    if (reportSuccess) // Debug.Log ("PSSM | FindTransform | Found the transform " + name);
                     return result;
                 }
             }
@@ -571,7 +734,7 @@ namespace PartSubtypeSwitcher
             {
                 if (string.Equals (part.attachNodes[i].id, name))
                 {
-                    Debug.Log ("PSSM | FindAttachNode | Found the node " + name);
+                    // Debug.Log ("PSSM | FindAttachNode | Found the node " + name);
                     return part.attachNodes[i];
                 }
             }
@@ -615,7 +778,7 @@ namespace PartSubtypeSwitcher
                         goto foundField;
                     }
                 }
-                Debug.LogWarning ("*PartUtils* Unable to find UIPartActionWindow list");
+                // Debug.LogWarning ("*PartUtils* Unable to find UIPartActionWindow list");
                 return null;
             }
 
