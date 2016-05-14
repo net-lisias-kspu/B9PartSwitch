@@ -31,5 +31,5 @@ A simple module might look something like this:
 			tankType = LiquidFuel
 			transform = model_lf
 		}
-        }
+	}
 ```
