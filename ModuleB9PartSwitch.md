@@ -1,6 +1,6 @@
 `ModuleB9PartSwitch` is the PartModule at the heart of B9PartSwitch.  Each `ModuleB9PartSwitch` has multiple subtypes which can be switched between. An unlimited number of `ModuleB9PartSwitch` modules can exist on the same part, with some restrictions.
 
-### Fields
+## Fields
 
 * **`moduleID`** - A unique identifier for this module, which may be blank if there is only one `ModuleB9ParSwitch` on the part. Similar to `engineID` on engine modules. I recommend that it not contain spaces so that it can accessed easily with ModuleManager.
 * **`baseVolume`** - The volume of tanks in this module, in KSP volume units (i.e. units of `LiquidFuel`). Subtypes may modify this volume
@@ -9,11 +9,24 @@
 * **`affectDragCubes`** - Whether the part's drag cubes should be re-calculated when switching the subtype. Defaults to `true`, however, drag cubes will never be re-calculated if no transforms/models are switched on subtypes. Should be set to `false` if transforms/models are switched but they do not differ significantly in shape.
 * **`affectFARVoxels`** - If FerramAerospaceResearch is installed, this affects whether vessel re-voxelization should be triggered when switching the subtype. Defaults to `true`, however, re-voxelization will never be triggered if no transforms/models are switched on subtypes. Should be set to `false` if transforms/models are switched but they do not differ significantly in shape.
 
-### Subtypes
+## Subtypes
 
-Each node named `SUBTYPE` defines a different subtype. Please see the Subtype page for more information (coming soon).
+Each node named `SUBTYPE` defines a different subtype. Subtypes have the following fields:
 
-### Multiple Modules on the same Part
+* **`name`** - Unique name for the subtype. Shouldn't contain any spaces for easy ModuleManager access
+* **`title`** - Human-readable name for the subtype. Will be filled from `name` if blank.
+* **`addedMass`** - Mass that is added to the part by this subtype (in addition to tank and resource mass).
+* **`addedCost`** - Cost that is added to the part by this subtype (in addition to tank and resource cost).
+* **`volumeAdded`** - Tank volume added by this subtype (added on top of the module's `baseVolume`)
+* **`volumeMultiplier`** - Multiplier to apply to the module's `baseVolume` for this subtype. This probably shouldn't be used.
+* **`tankType`** - Name of the tank type that this subtype should use. Tank types are defined by global `B9_TANK_TYPE` nodes. There will be a page describing them eventually.
+* **`transform`** - Name of Unity transform(s) which should be enabled on this subtype (it will be disabled on all others unless they also have it).  Multiple are allowed, so you can have `transform = a` and `transform = b` on separate lines within the same subtype. If multiple transforms have the same name they will all be included.
+* **`node`** - Attach node id for stack nodes that should be enabled.  Important things to note: (1) KSP strips out the node_stack part when creating the node id, so `node_stack_top01` will have a node id of `top01` (2) This is done as a partial text search, so `top` will match `top01` and `top02`
+* **`maxTemp`** - Temperature (in kelvins) to set the part's `maxTemp` to with this subtype. Other subtypes will use the part prefab's `maxTemp`
+* **`skinMaxTemp`** - Temperature (in kelvins) to set the part's `skinMaxTemp` to with this subtype. Other subtypes will use the part prefab's `skinMaxTemp`
+* **`attachNode`** - If set, will change the part's surface attachment node to this. Only works if the part is already surface attachable. Subtypes that don't have this defined will use the prefab's.  Follows the usual node format of position x, y, z, normal x, y, z (the final size parameter is not used)
+
+## Multiple Modules on the same Part
 
 An unlimited number of `ModuleB9PartSwitch` modules can exist on the same part with the following restrictions:
 
@@ -25,7 +38,7 @@ An unlimited number of `ModuleB9PartSwitch` modules can exist on the same part w
 * Only one module can manage the part's `skinMaxTemp`
 * Only one module can manage the part's surface attachment node
 
-### Examples
+## Examples
 
 A simple module might look something like this:
 
@@ -48,6 +61,7 @@ A simple module might look something like this:
 			title = Fuel Tank
 			tankType = LiquidFuel
 			transform = model_lf
+			transform = model_lf_2
 		}
 	}
 ```
