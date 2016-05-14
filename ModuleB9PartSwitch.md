@@ -26,8 +26,8 @@ A simple module might look something like this:
 
 		SUBTYPE
 		{
-			name = 
-			title = HL (LF)
+			name = LiquidFuel
+			title = Fuel Tank
 			tankType = LiquidFuel
 			transform = model_lf
 		}
