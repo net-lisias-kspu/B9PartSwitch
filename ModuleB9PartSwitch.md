@@ -5,7 +5,7 @@
 * **`moduleID`** - A unique identifier for this module, which may be blank if there is only one `ModuleB9ParSwitch` on the part. Similar to `engineID` on engine modules. I recommend that it not contain spaces so that it can accessed easily with ModuleManager.
 * **`baseVolume`** - The volume of tanks in this module, in KSP volume units (i.e. units of `LiquidFuel`). Subtypes may modify this volume
 * **`switcherDescription`** - A description of the switcher which is used in the part's right click menu in the editor. Default: "Subtype". Other examples: "Tank", "Top Nodes".  Should generally be kept short and descriptive as a single control contains this, the subtype title, and the controls to switch subtypes.
-* **`switcherDescriptionPlural`** - **_coming soon_** - Describes the switcher/subtypes in the part catalog. Default: "Subtypes", which would become a description of "3 Subtypes" (or whatever number).
+* **`switcherDescriptionPlural`** - Describes the switcher/subtypes in the part catalog. Default: "Subtypes", which would become a description of "3 Subtypes" (or whatever number).
 * **`affectDragCubes`** - Whether the part's drag cubes should be re-calculated when switching the subtype. Defaults to `true`, however, drag cubes will never be re-calculated if no transforms/models are switched on subtypes. Should be set to `false` if transforms/models are switched but they do not differ significantly in shape.
 * **`affectFARVoxels`** - If FerramAerospaceResearch is installed, this affects whether vessel re-voxelization should be triggered when switching the subtype. Defaults to `true`, however, re-voxelization will never be triggered if no transforms/models are switched on subtypes. Should be set to `false` if transforms/models are switched but they do not differ significantly in shape.
 
@@ -25,6 +25,7 @@ Each node named `SUBTYPE` defines a different subtype. Subtypes have the followi
 * **`maxTemp`** - Temperature (in kelvins) to set the part's `maxTemp` to with this subtype. Other subtypes will use the part prefab's `maxTemp`
 * **`skinMaxTemp`** - Temperature (in kelvins) to set the part's `skinMaxTemp` to with this subtype. Other subtypes will use the part prefab's `skinMaxTemp`
 * **`attachNode`** - If set, will change the part's surface attachment node to this. Only works if the part is already surface attachable. Subtypes that don't have this defined will use the prefab's.  Follows the usual node format of position x, y, z, normal x, y, z (the final size parameter is not used)
+* **`crashTolerance`** - Maximum speed (in m/s) at which the part can survive a crash.  Subtypes which do not have this set will use the part prefab's value.  **NOTE** - There is apparently a bug in KSP where only one collider on a part will be considered for crashes.  There is nothing I can do about that.
 
 ## Multiple Modules on the same Part
 
@@ -37,6 +38,7 @@ An unlimited number of `ModuleB9PartSwitch` modules can exist on the same part w
 * Only one module can manage the part's `maxTemp`
 * Only one module can manage the part's `skinMaxTemp`
 * Only one module can manage the part's surface attachment node
+* Only one module can manage the part's `crashTolerance`
 
 ## Examples
 
@@ -53,6 +55,15 @@ A simple module might look something like this:
 		{
 			name = Structural
 			transform = model_str
+		}
+
+		SUBTYPE
+		{
+			name = Structural_Big
+			title = Structural (Big)
+			transform = model_str
+			addedMass = 0.5
+			addedCost = 100
 		}
 
 		SUBTYPE
