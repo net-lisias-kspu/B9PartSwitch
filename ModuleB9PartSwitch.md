@@ -40,6 +40,16 @@ An unlimited number of `ModuleB9PartSwitch` modules can exist on the same part w
 * Only one module can manage the part's surface attachment node
 * Only one module can manage the part's `crashTolerance`
 
+## Incompatible Modules
+
+Resource switching on ModuleB9PartSwitch will be disabled if any of the following modules are found on the part:
+
+* `FSfuelSwitch`
+* `InterstellarFuelSwitch`
+* `ModuleFuelTanks`
+
+This is because the way that these modules do resource switching is incompatible with `ModuleB9PartSwitch`.  Note that when any of these modules are found, the tank type for all subtypes is set to the default `Structural` subtype.  This means that no subtype will receive any mass or cost from the tank.
+
 ## Examples
 
 A simple module might look something like this:
