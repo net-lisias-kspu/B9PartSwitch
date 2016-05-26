@@ -19,7 +19,7 @@ Each node named `SUBTYPE` defines a different subtype. Subtypes have the followi
 * **`addedCost`** - Cost that is added to the part by this subtype (in addition to tank and resource cost).
 * **`volumeAdded`** - Tank volume added by this subtype (added on top of the module's `baseVolume`)
 * **`volumeMultiplier`** - Multiplier to apply to the module's `baseVolume` for this subtype. This probably shouldn't be used.
-* **`tankType`** - Name of the tank type that this subtype should use. Tank types are defined by global `B9_TANK_TYPE` nodes. There will be a page describing them eventually.
+* **`tankType`** - Name of the tank type that this subtype should use. Tank types are defined by global `B9_TANK_TYPE` nodes. A description of how to define tank types can be found on the [Tank Definitions](../Tank-Definitions) page.
 * **`transform`** - Name of Unity transform(s) which should be enabled on this subtype (it will be disabled on all others unless they also have it).  Multiple are allowed, so you can have `transform = a` and `transform = b` on separate lines within the same subtype. If multiple transforms have the same name they will all be included.
 * **`node`** - Attach node id for stack nodes that should be enabled.  Important things to note: (1) KSP strips out the node_stack part when creating the node id, so `node_stack_top01` will have a node id of `top01` (2) This is done as a partial text search, so `top` will match `top01` and `top02`. More than one can be defined, so you can have e.g. `node = bottom01` and `node = top01` on the same subtype.
 * **`maxTemp`** - Temperature (in kelvins) to set the part's `maxTemp` to with this subtype. Other subtypes will use the part prefab's `maxTemp`
