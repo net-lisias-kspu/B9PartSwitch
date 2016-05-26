@@ -1,4 +1,4 @@
-The tank definitions define common fuel tanks for subtypes of [ModuleB9PartSwitch](../ModuleB9PartSwitch) to use. Tank definitions define the resources that the tank contains and additional mass/cost that the tank should have
+The tank definitions define common fuel tanks for subtypes of [[ModuleB9PartSwitch]] to use. Tank definitions define the resources that the tank contains and additional mass/cost that the tank should have
 
 ### Defining Tank Types
 
