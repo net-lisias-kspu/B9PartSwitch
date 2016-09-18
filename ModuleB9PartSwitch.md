@@ -2,7 +2,7 @@
 
 ## Fields
 
-* **`moduleID`** - A unique identifier for this module, which may be blank if there is only one `ModuleB9ParSwitch` on the part. Similar to `engineID` on engine modules. I recommend that it not contain spaces so that it can accessed easily with ModuleManager.
+* **`moduleID`** - A unique identifier for this module, which may be blank if there is only one `ModuleB9PartSwitch` on the part. Similar to `engineID` on engine modules. I recommend that it not contain spaces so that it can accessed easily with ModuleManager.
 * **`baseVolume`** - The volume of tanks in this module, in KSP volume units (i.e. units of `LiquidFuel`). Subtypes may modify this volume
 * **`switcherDescription`** - A description of the switcher which is used in the part's right click menu in the editor. Default: "Subtype". Other examples: "Tank", "Top Nodes".  Should generally be kept short and descriptive as a single control contains this, the subtype title, and the controls to switch subtypes.
 * **`switcherDescriptionPlural`** - Describes the switcher/subtypes in the part catalog. Default: "Subtypes", which would become a description of "3 Subtypes" (or whatever number).
