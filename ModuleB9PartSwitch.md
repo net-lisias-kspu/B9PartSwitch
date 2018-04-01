@@ -8,6 +8,9 @@
 * **`switcherDescriptionPlural`** - Describes the switcher/subtypes in the part catalog. Default: "Subtypes", which would become a description of "3 Subtypes" (or whatever number).
 * **`affectDragCubes`** - Whether the part's drag cubes should be re-calculated when switching the subtype. Defaults to `true`, however, drag cubes will never be re-calculated if no transforms/models are switched on subtypes. Should be set to `false` if transforms/models are switched but they do not differ significantly in shape.
 * **`affectFARVoxels`** - If FerramAerospaceResearch is installed, this affects whether vessel re-voxelization should be triggered when switching the subtype. Defaults to `true`, however, re-voxelization will never be triggered if no transforms/models are switched on subtypes. Should be set to `false` if transforms/models are switched but they do not differ significantly in shape.
+* **`parentID`** - `moduleID` of another `ModuleB9PartSwitch` - subtypes of this module can add volume to the "parent" module via `volumeAddedToParent`
+* **`switchInFlight`** - whether you can switch the subtype in flight (default false).  **NOTE** - there are no checks to ensure that you aren't adding of subtracting mass out of nowhere with this.  Please use carefully (pay attention to which tank types you use too)
+* **`advancedTweakablesOnly`** - whether this switcher is only available if you have advanced tweakables on (default false).  Note that this only disables the UI.
 
 ## Subtypes
 
@@ -19,26 +22,63 @@ Each node named `SUBTYPE` defines a different subtype. Subtypes have the followi
 * **`addedCost`** - Cost that is added to the part by this subtype (in addition to tank and resource cost).
 * **`volumeAdded`** - Tank volume added by this subtype (added on top of the module's `baseVolume`)
 * **`volumeMultiplier`** - Multiplier to apply to the module's `baseVolume` for this subtype. This probably shouldn't be used.
+* **`volumeAddedToParent`** - If this module has a `parentID`, this subtype will add this much volume to the parent module specified by it
+* **`percentFilled`** - If specified (and not overridden on an individual resource), this specifies the percentage that tanks on this subtype should be filled (note - this overrides `percentFilled` on the tank type)
+* **`resourcesTweakable`** - If specified, this controls whether the resource amounts on this subtype are tweakable (note - this overrides `resourcesTweakable` on the tank type)
 * **`tankType`** - Name of the tank type that this subtype should use. Tank types are defined by global `B9_TANK_TYPE` nodes. A description of how to define tank types can be found on the [[Tank Definitions|Tank-Definitions]] page.
 * **`transform`** - Name of Unity transform(s) which should be enabled on this subtype (it will be disabled on all others unless they also have it).  Multiple are allowed, so you can have `transform = a` and `transform = b` on separate lines within the same subtype. If multiple transforms have the same name they will all be included.
-* **`node`** - Attach node id for stack nodes that should be enabled.  Important things to note: (1) KSP strips out the node_stack part when creating the node id, so `node_stack_top01` will have a node id of `top01` (2) This is done as a partial text search, so `top` will match `top01` and `top02`. More than one can be defined, so you can have e.g. `node = bottom01` and `node = top01` on the same subtype.
+* **`node`** - Attach node id for stack nodes that should be enabled. **NOTE** - KSP strips out the node_stack part when creating the node id, so `node_stack_top01` will have a node id of `top01`. More than one can be defined, so you can have e.g. `node = bottom01` and `node = top01` on the same subtype.
 * **`maxTemp`** - Temperature (in kelvins) to set the part's `maxTemp` to with this subtype. Other subtypes will use the part prefab's `maxTemp`
 * **`skinMaxTemp`** - Temperature (in kelvins) to set the part's `skinMaxTemp` to with this subtype. Other subtypes will use the part prefab's `skinMaxTemp`
 * **`attachNode`** - If set, will change the part's surface attachment node to this. Only works if the part is already surface attachable. Subtypes that don't have this defined will use the prefab's.  Follows the usual node format of position x, y, z, normal x, y, z (the final size parameter is not used)
 * **`crashTolerance`** - Maximum speed (in m/s) at which the part can survive a crash.  Subtypes which do not have this set will use the part prefab's value.  **NOTE** - There is apparently a bug in KSP where only one collider on a part will be considered for crashes.  There is nothing I can do about that.
+* **`CoMOffset`** - Part's center of mass offset.  Subtypes that don't specify one will use the part's default `CoMOffset`
+* **`CoPOffset`** - Part's center of pressure (aerodynamic force) offset.  Subtypes that don't specify one will use the part's default `CoPOffset`
+* **`CoLOffset`** - Part's center of lift offset.  Subtypes that don't specify one will use the part's default `CoLOffset`
+* **`CenterOfBuoyancy`** - Part's center of buoyancy.  Subtypes that don't specify one will use the part's default `CenterOfBuoyancy`
+* **`CenterOfDisplacement`** - Part's center of displacement.  Subtypes that don't specify one will use the part's default `CenterOfDisplacement`
+* **`allowSwitchInFlight`** - Whether this subtype can be changed to in flight (default true).  If false, it will be hidden from the available subtype options in flight.  Only matters if the module has `switchInFlight = true`
+* **`stackSymmetry`** - The symmetry number to use on this part (affects how parts can be attached to symmetric stack nodes). Any subtypes that don't specify this will use the part's default `stackSymmetry`
+
+Subtypes can also define the following nodes:
+
+* **`TEXTURE`** - texture switching - this specifies a texture to replace on the part's model
+  * `TEXTURE` nodes which take the following fields:
+    * `texture` (required) - path to the texture you want to use, e.g. `MyMod/Parts/SomePart/texture`
+    * `currentTexture` (optional) - name of the current texture (just the filename excluding the extension, not the full path).  Anything that does not have this as the current texture will be ignored.
+    * `isNormalMap` (optional, default false) - whether the texture is a normal map or not (necessary due to KSP treating normal maps differently when they are loaded)
+    * `shaderProperty` (optional) - name of the shader property that the texture sits on.  Default is `_MainTex` if `isNormalMap = false` or `_BumpMap` if `isNormalMap = true`.  For an emissive texture you would want `_Emissive`
+    * `transform` (optional, can appear more than once) - names of transforms to apply the texture switch to
+    * `baseTransform` (optional, can appear more than once) - names of transforms where the texture switch should be applied to them and all of their children
+  * If no `transform` or `baseTransform` is specified, it will look for textures to switch on the entire part
+* **`RESOURCE`** - Resources can be specified here, or if the resource already exists on the tank type, any fields specified here will override those on the tank type.  The allowed fields can be found on the [[Tank-Definitions]] page
 
 ## Multiple Modules on the same Part
 
 An unlimited number of `ModuleB9PartSwitch` modules can exist on the same part with the following restrictions:
 
 * Each must have a unique `moduleID`
-* They cannot manage the same transforms/models. A module "manages" a transform if any subtype uses it.
+* If they manage the same transform, it will only enabled if all managing subtypes agree that it should be enabled. A module "manages" a transform if any subtype uses it.
 * They cannot manage the same resources. A module "manages" a resource if any subtype has a tank type which uses it.
-* They cannot manage the same stack nodes. A module "manages" a stack node if any subtype uses it.
+* If they manage the same stack node, it will only be enabled if all managing subtypes agree that it should be enabled. A module "manages" a stack node if any subtype uses it.
 * Only one module can manage the part's `maxTemp`
 * Only one module can manage the part's `skinMaxTemp`
 * Only one module can manage the part's surface attachment node
 * Only one module can manage the part's `crashTolerance`
+* Only one module can manage the part's `CoMOffset`
+* Only one module can manage the part's `CoPOffset`
+* Only one module can manage the part's `CoLOffset`
+* Only one module can manage the part's `CenterOfBuoyancy`
+* Only one module can manage the part's `CenterOfDisplacement`
+* Only one module can manage the part's `stackSymmetry`
+
+## Drag cubes
+
+* `ModuleB9PartSwitch` will re-render drag cubes as necessary if transforms are switched and `affectDragCubes` is true (it is by default).  If transforms are switched but do not change the shape significantly, it is recommended that you set `affectDragCubes = false` and `affectFARVoxels = false` to avoid any performance impact from re-rendering drag cubes. The drag cube re-rendering is compatible with one other module using `IMultipleDragCubes` (for instance, `ModuleJettison` or `ModuleAnimateGeneric`) - if this is the case, all of that module's drag cubes will be re-rendered when switching.
+
+## Switching in flight
+
+* If the module has `switchInFlight = true`, the option will be made available to change the subtype in flight. If any resources are present that would be removed, a confirmation is presented to the user before switching. After switching, all managed resources will be empty.
 
 ## Incompatible Modules
 
