@@ -1,0 +1,1 @@
+A simple module that can be used to permanently disable transforms you don't want to use on the part's model.  Accepts any number of `transform = xxx` values - any transforms named `xxx` on the part will be hidden (and their colliders disabled). Any child transforms will also be disabled.
