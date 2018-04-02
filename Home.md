@@ -7,11 +7,11 @@ Welcome to the B9PartSwitch wiki!
 
 ### About
 
-B9 Part Switch is a Kerbal Space Program plugin which allows parts to switch resources, models, stack nodes, and much more.
+B9 Part Switch is a Kerbal Space Program plugin which allows parts to switch resources, models, textures, stack nodes, and much more.
 
 ### Feature Highlights
 
-* Parts can switch their resources, models, stack nodes, heat tolerance, surface attach position, and crash tolerance
+* Parts can switch their resources, models, stack nodes, heat tolerance, surface attach position, crash tolerance, and more
 * Mass and cost can be modified
 * Tanks used to switch resources are defined centrally to allow easy modification and minimal setup
 * Configs are designed for easy patching by ModuleManager
