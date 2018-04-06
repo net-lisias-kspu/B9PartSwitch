@@ -43,7 +43,7 @@ Each node named `SUBTYPE` defines a different subtype. Subtypes have the followi
 Subtypes can also define the following nodes:
 
 * **`TEXTURE`** - texture switching - this specifies a texture to replace on the part's model
-  * `TEXTURE` nodes which take the following fields:
+  * `TEXTURE` node take the following fields:
     * `texture` (required) - path to the texture you want to use, e.g. `MyMod/Parts/SomePart/texture`
     * `currentTexture` (optional) - name of the current texture (just the filename excluding the extension, not the full path).  Anything that does not have this as the current texture will be ignored.
     * `isNormalMap` (optional, default false) - whether the texture is a normal map or not (necessary due to KSP treating normal maps differently when they are loaded)
