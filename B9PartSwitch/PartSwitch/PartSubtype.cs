@@ -26,6 +26,9 @@ namespace B9PartSwitch
         [NodeData(name = "TEXTURE")]
         public List<TextureSwitchInfo> textureSwitches = new List<TextureSwitchInfo>();
 
+        [NodeData(name = "NODE")]
+        public List<AttachNodeModifierInfo> attachNodeModifierInfos = new List<AttachNodeModifierInfo>();
+
         [NodeData]
         public float addedMass = 0f;
 
@@ -92,6 +95,7 @@ namespace B9PartSwitch
         private List<Transform> transforms = new List<Transform>();
         private List<AttachNode> nodes = new List<AttachNode>();
         private List<TextureReplacement> textureReplacements = new List<TextureReplacement>();
+        private List<AttachNodeModifier> attachNodeModifiers = new List<AttachNodeModifier>();
 
         #endregion
 
@@ -176,6 +180,7 @@ namespace B9PartSwitch
             FindObjects();
             FindNodes();
             FindTextureReplacements();
+            FindAttachNodeModifiers();
         }
 
         #endregion
@@ -199,6 +204,7 @@ namespace B9PartSwitch
             ActivateTextures();
             AddResources(false);
             UpdatePartParams();
+            attachNodeModifiers.ForEach(nm => nm.ActivateOnStart());
         }
 
         public void DeactivateOnSwitch()
@@ -212,6 +218,7 @@ namespace B9PartSwitch
 
             DeactivateTextures();
             RemoveResources();
+            attachNodeModifiers.ForEach(nm => nm.DeactivateOnSwitch());
         }
 
         public void ActivateOnSwitch()
@@ -221,6 +228,7 @@ namespace B9PartSwitch
             ActivateTextures();
             AddResources(true);
             UpdatePartParams();
+            attachNodeModifiers.ForEach(nm => nm.ActivateOnSwitch());
         }
 
         public void DeactivateForIcon()
@@ -379,6 +387,23 @@ namespace B9PartSwitch
                 catch(Exception e)
                 {
                     LogError("Exception while initializing a texture replacment:");
+                    Debug.LogException(e);
+                }
+            }
+        }
+
+        private void FindAttachNodeModifiers()
+        {
+            foreach (AttachNodeModifierInfo info in attachNodeModifierInfos)
+            {
+                try
+                {
+                    AttachNodeModifier mover = info.CreateAttachNodeModifier(Part);
+                    if (mover != null) attachNodeModifiers.Add(mover);
+                }
+                catch (Exception e)
+                {
+                    LogError("Exception while initializing a node mover:");
                     Debug.LogException(e);
                 }
             }
