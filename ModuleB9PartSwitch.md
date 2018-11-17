@@ -52,6 +52,9 @@ Subtypes can also define the following nodes:
     * `baseTransform` (optional, can appear more than once) - names of transforms where the texture switch should be applied to them and all of their children
   * If no `transform` or `baseTransform` is specified, it will look for textures to switch on the entire part
 * **`RESOURCE`** - Resources can be specified here, or if the resource already exists on the tank type, any fields specified here will override those on the tank type.  The allowed fields can be found on the [[Tank-Definitions]] page
+* **`NODE`** - Allows attach nodes on the part to be moved.  If a node is moved on some subtypes but not others, the subtypes that don't specify a position will use the attach node's default position.
+    * `name` - the id of the attach node.  If the attach node is `node_stack_top01` you would have `name = top01`
+    * `position` - the new position of the attach node, specified as x, y, z coordinates.
 
 ## Multiple Modules on the same Part
 
