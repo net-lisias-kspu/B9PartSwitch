@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UniLinq;
+using UnityEngine;
 using B9PartSwitch.Fishbones;
 using B9PartSwitch.Fishbones.Context;
 
@@ -41,6 +42,12 @@ namespace B9PartSwitch
 
         [NodeData(name = "name")]
         public string tankName;
+
+        [NodeData]
+        public Color? primaryColor;
+
+        [NodeData]
+        public Color? secondaryColor;
 
         [NodeData]
         public float tankMass = 0f;
