@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -36,7 +37,7 @@ namespace B9PartSwitch.UI
         [SerializeField]
         private TooltipController_TitleAndText buttonNextTooltipController;
 
-        private UIPartActionSubtypeButton[] subtypeButtons;
+        private List<UIPartActionSubtypeButton> subtypeButtons;
 
         public static void EnsurePrefab()
         {
@@ -57,7 +58,7 @@ namespace B9PartSwitch.UI
 
             SwitcherSubtypeDescriptionGenerator subtypeDescriptionGenerator = new SwitcherSubtypeDescriptionGenerator(switcherModule);
 
-            subtypeButtons = new UIPartActionSubtypeButton[switcherModule.subtypes.Count];
+            subtypeButtons = new List<UIPartActionSubtypeButton>(switcherModule.subtypes.Count);
             for (int i = 0; i < switcherModule.subtypes.Count; i++)
             {
                 PartSubtype subtype = switcherModule.subtypes[i];
@@ -75,18 +76,18 @@ namespace B9PartSwitch.UI
                     () => SetSubtype(index)
                 );
 
-                subtypeButtons[i] = subtypeButton;
+                subtypeButtons.Add(subtypeButton);
             }
 
-            subtypeButtons[0].previousItem = subtypeButtons[subtypeButtons.Length - 1];
+            subtypeButtons[0].previousItem = subtypeButtons[subtypeButtons.Count - 1];
             subtypeButtons[0].nextItem = subtypeButtons[1];
-            for (int i = 1; i < subtypeButtons.Length - 1; i++)
+            for (int i = 1; i < subtypeButtons.Count - 1; i++)
             {
                 subtypeButtons[i].previousItem = subtypeButtons[i - 1];
                 subtypeButtons[i].nextItem = subtypeButtons[i + 1];
             }
-            subtypeButtons[subtypeButtons.Length - 1].previousItem = subtypeButtons[subtypeButtons.Length - 2];
-            subtypeButtons[subtypeButtons.Length - 1].nextItem = subtypeButtons[0];
+            subtypeButtons[subtypeButtons.Count - 1].previousItem = subtypeButtons[subtypeButtons.Count - 2];
+            subtypeButtons[subtypeButtons.Count - 1].nextItem = subtypeButtons[0];
 
             switcherDescriptionText.text = switcherModule.switcherDescription;
 
