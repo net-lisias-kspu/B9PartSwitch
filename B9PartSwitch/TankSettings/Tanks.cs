@@ -90,7 +90,12 @@ namespace B9PartSwitch
 
         #endregion
 
-        public void Load(ConfigNode node, OperationContext context) => this.LoadFields(node, context);
+        public void Load(ConfigNode node, OperationContext context)
+        {
+            this.LoadFields(node, context);
+            OnLoad();
+        }
+
         public void Save(ConfigNode node, OperationContext context) => this.SaveFields(node, context);
 
         public List<TankResource>.Enumerator GetEnumerator() => resources.GetEnumerator();
@@ -109,6 +114,48 @@ namespace B9PartSwitch
                     outStr += "Null Tank Resource";
             }
             return outStr;
+        }
+
+        private void OnLoad()
+        {
+            SetDefaultColors();
+        }
+
+        private void SetDefaultColors()
+        {
+            if (primaryColor.IsNotNull() || secondaryColor.IsNotNull()) return;
+
+            if (resources.Count == 1 && resources[0].ResourceName == "LiquidFuel")
+            {
+                primaryColor = new Color(1, 0.75f, 0.5f);
+            }
+            else if (resources.Count == 2 && resources[0].ResourceName == "LiquidFuel" && resources[1].ResourceName == "Oxidizer")
+            {
+                primaryColor = new Color(1, 0.75f, 0.5f);
+                secondaryColor = new Color(0.5f, 0.5f, 1);
+            }
+            else if (resources.Count == 1 && resources[0].ResourceName == "MonoPropellant")
+            {
+                primaryColor = new Color(1, 1, 0.625f);
+            }
+            else if (resources.Count == 1 && resources[0].ResourceName == "ElectricCharge")
+            {
+                primaryColor = new Color(0.125f, 0.125f, 0.125f);
+                secondaryColor = new Color(1, 1, 0.375f);
+            }
+            else if (resources.Count == 1 && resources[0].ResourceName == "LqdHydrogen")
+            {
+                primaryColor = new Color(0.75f, 0.75f, 1);
+            }
+            else if (resources.Count == 2 && resources[0].ResourceName == "LqdHydrogen" && resources[1].ResourceName == "Oxidizer")
+            {
+                primaryColor = new Color(0.75f, 0.75f, 1);
+                secondaryColor = new Color(0.5f, 0.5f, 1);
+            }
+            else if (resources.Count == 1 && resources[0].ResourceName == "Oxidizer")
+            {
+                primaryColor = new Color(0.5f, 0.5f, 1);
+            }
         }
     }
 }
