@@ -140,7 +140,7 @@ namespace B9PartSwitch.UI
 
             stringBuilder.BeginGroup();
 
-            if (!ApproximatelyEqual(dryMass, wetMass))
+            if (!ApproximatelyEqual(dryMass, wetMass) && (!ApproximatelyEqual(dryMass, baseDryMass) || !ApproximatelyEqual(wetMass, baseWetMass)))
             {
                 stringBuilder.Append("<b>{0}:</b> {1} {2}", SwitcherSubtypeDescriptionGenerator_Mass, SwitcherSubypeDescriptionGenerator_MassTons(dryMass, "0.###"), SwitcherSubtypeDescriptionGenerator_TankEmpty);
                 if (!ApproximatelyZero(dryMassDifference) && !ApproximatelyEqual(dryMassDifference, wetMassDifference)) stringBuilder.Append(FormatMassDifference(dryMassDifference));
@@ -155,7 +155,7 @@ namespace B9PartSwitch.UI
                 stringBuilder.AppendLine();
             }
 
-            if (!ApproximatelyEqual(dryCost, wetCost))
+            if (!ApproximatelyEqual(dryCost, wetCost) && (!ApproximatelyEqual(dryCost, baseDryCost) || !ApproximatelyEqual(wetCost, baseWetCost)))
             {
                 stringBuilder.Append("<b>{0}:</b> {1:0.#} {2}", SwitcherSubtypeDescriptionGenerator_Cost, dryCost, SwitcherSubtypeDescriptionGenerator_TankEmpty);
                 if (!ApproximatelyZero(dryCostDifference) && !ApproximatelyEqual(dryCostDifference, wetCostDifference)) stringBuilder.Append(FormatCostDifference(dryCostDifference));
