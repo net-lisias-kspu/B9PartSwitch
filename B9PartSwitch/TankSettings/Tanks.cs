@@ -132,11 +132,11 @@ namespace B9PartSwitch
             else if (resources.Count == 2 && resources[0].ResourceName == "LiquidFuel" && resources[1].ResourceName == "Oxidizer")
             {
                 primaryColor = new Color(1, 0.75f, 0.5f);
-                secondaryColor = new Color(0.5f, 0.5f, 1);
+                secondaryColor = new Color(0.25f, 0.25f, 1);
             }
             else if (resources.Count == 1 && resources[0].ResourceName == "MonoPropellant")
             {
-                primaryColor = new Color(1, 1, 0.625f);
+                primaryColor = new Color(1, 1, 0.5f);
             }
             else if (resources.Count == 1 && resources[0].ResourceName == "ElectricCharge")
             {
@@ -150,11 +150,11 @@ namespace B9PartSwitch
             else if (resources.Count == 2 && resources[0].ResourceName == "LqdHydrogen" && resources[1].ResourceName == "Oxidizer")
             {
                 primaryColor = new Color(0.75f, 0.75f, 1);
-                secondaryColor = new Color(0.5f, 0.5f, 1);
+                secondaryColor = new Color(0.25f, 0.25f, 1);
             }
             else if (resources.Count == 1 && resources[0].ResourceName == "Oxidizer")
             {
-                primaryColor = new Color(0.5f, 0.5f, 1);
+                primaryColor = new Color(0.25f, 0.25f, 1);
             }
         }
     }
