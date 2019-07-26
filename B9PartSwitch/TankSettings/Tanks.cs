@@ -5,6 +5,7 @@ using UniLinq;
 using UnityEngine;
 using B9PartSwitch.Fishbones;
 using B9PartSwitch.Fishbones.Context;
+using B9PartSwitch.Utils;
 
 namespace B9PartSwitch
 {
@@ -127,34 +128,34 @@ namespace B9PartSwitch
 
             if (resources.Count == 1 && resources[0].ResourceName == "LiquidFuel")
             {
-                primaryColor = new Color(1, 0.75f, 0.5f);
+                primaryColor = ResourceColors.LiquidFuel;
             }
             else if (resources.Count == 2 && resources[0].ResourceName == "LiquidFuel" && resources[1].ResourceName == "Oxidizer")
             {
-                primaryColor = new Color(1, 0.75f, 0.5f);
-                secondaryColor = new Color(0.25f, 0.25f, 1);
+                primaryColor = ResourceColors.LiquidFuel;
+                secondaryColor = ResourceColors.Oxidizer;
             }
             else if (resources.Count == 1 && resources[0].ResourceName == "MonoPropellant")
             {
-                primaryColor = new Color(1, 1, 0.5f);
+                primaryColor = ResourceColors.MonoPropellant;
             }
             else if (resources.Count == 1 && resources[0].ResourceName == "ElectricCharge")
             {
-                primaryColor = new Color(0.125f, 0.125f, 0.125f);
-                secondaryColor = new Color(1, 1, 0.375f);
+                primaryColor = ResourceColors.ElectricChargePrimary;
+                secondaryColor = ResourceColors.ElectricChargeSecondary;
             }
             else if (resources.Count == 1 && resources[0].ResourceName == "LqdHydrogen")
             {
-                primaryColor = new Color(0.75f, 0.75f, 1);
+                primaryColor = ResourceColors.LqdHydrogen;
             }
             else if (resources.Count == 2 && resources[0].ResourceName == "LqdHydrogen" && resources[1].ResourceName == "Oxidizer")
             {
-                primaryColor = new Color(0.75f, 0.75f, 1);
-                secondaryColor = new Color(0.25f, 0.25f, 1);
+                primaryColor = ResourceColors.LqdHydrogen;
+                secondaryColor = ResourceColors.Oxidizer;
             }
             else if (resources.Count == 1 && resources[0].ResourceName == "Oxidizer")
             {
-                primaryColor = new Color(0.25f, 0.25f, 1);
+                primaryColor = ResourceColors.Oxidizer;
             }
         }
     }
