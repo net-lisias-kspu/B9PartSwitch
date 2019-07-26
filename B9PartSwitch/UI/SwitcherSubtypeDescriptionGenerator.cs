@@ -112,7 +112,7 @@ namespace B9PartSwitch.UI
             {
                 stringBuilder.AppendLine("<b>{0}:</b>", SwitcherSubtypeDescriptionGenerator_Resources);
                 foreach (TankResource resource in subtype.tankType)
-                    stringBuilder.AppendLine("  <color=#bfff3f>- {0}</color>: {1:F1}", resource.resourceDefinition.displayName, resource.unitsPerVolume * module.GetTotalVolume(subtype));
+                    stringBuilder.AppendLine("  <color=#bfff3f>- {0}</color>: {1:0.#}", resource.resourceDefinition.displayName, resource.unitsPerVolume * module.GetTotalVolume(subtype));
 
                 float parentVolume = baseParentVolume + (subtype.volumeAddedToParent * module.VolumeScale);
 
@@ -120,7 +120,7 @@ namespace B9PartSwitch.UI
                 {
                     float amount = resourceAndAmount.Key.unitsPerVolume * parentVolume;
                     float difference = amount - resourceAndAmount.Value;
-                    stringBuilder.Append("  <color=#bfff3f>- {0}</color>: {1:F1}", resourceAndAmount.Key.resourceDefinition.displayName, amount);
+                    stringBuilder.Append("  <color=#bfff3f>- {0}</color>: {1:0.#}", resourceAndAmount.Key.resourceDefinition.displayName, amount);
                     if (!ApproximatelyZero(difference)) stringBuilder.Append(FormatResourceDifference(difference));
                     stringBuilder.AppendLine();
                 }
@@ -240,7 +240,7 @@ namespace B9PartSwitch.UI
         private static string FormatResourceDifference(float resourceDifference)
         {
             string color = resourceDifference > 0 ? GOOD_CHANGE_COLOR : BAD_CHANGE_COLOR;
-            return $" (<color={color}>{resourceDifference:F1}</color>)";
+            return $" (<color={color}>{resourceDifference:+0.#;-0.#}</color>)";
         }
     }
 }
