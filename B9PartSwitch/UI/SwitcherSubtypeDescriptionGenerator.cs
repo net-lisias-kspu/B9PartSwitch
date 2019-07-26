@@ -18,7 +18,7 @@ namespace B9PartSwitch.UI
         private readonly ModuleB9PartSwitch module;
 
         private readonly float partDryMass, partWetMass, partDryCost, partWetCost, baseDryMass, baseWetMass, baseDryCost, baseWetCost;
-        private readonly bool showMaxTemp, showSkinMaxTemp, showCrashTolerance;
+        private readonly bool showDryMass, showWetMass, showDryCost, showWetCost, showMaxTemp, showSkinMaxTemp, showCrashTolerance;
         private readonly float prefabMaxTemp, prefabSkinMaxTemp, prefabCrashTolerance, currentMaxTemp, currentSkinMaxTemp, currentCrashTolerance;
 
         private readonly KeyValuePair<TankResource, float>[] parentResources;
@@ -44,6 +44,20 @@ namespace B9PartSwitch.UI
 
             baseDryCost = partDryCost - module.GetDryCost(module.CurrentSubtype) - module.GetParentDryCost(module.CurrentSubtype);
             baseWetCost = partWetCost - module.GetWetCost(module.CurrentSubtype) - module.GetParentWetCost(module.CurrentSubtype);
+
+            showWetMass = module.ChangesResourceMass;
+            showWetMass |= module.Parent?.CurrentTankType.ChangesResourceMass ?? false;
+
+            showDryMass = showWetMass;
+            showDryMass |= module.ChangesDryMass;
+            showDryMass |= (module.Parent?.CurrentTankType.tankMass ?? 0) != 0;
+
+            showWetCost = module.ChangesResourceCost;
+            showWetCost |= module.Parent?.CurrentTankType.ChangesResourceCost ?? false;
+
+            showDryCost = showWetCost;
+            showDryCost |= module.ChangesDryCost;
+            showDryCost |= (module.Parent?.CurrentTankType.tankCost ?? 0) != 0;
 
             showMaxTemp = module.HasPartAspectLock("maxTemp");
             showSkinMaxTemp = module.HasPartAspectLock("skinMaxTemp");
@@ -138,7 +152,7 @@ namespace B9PartSwitch.UI
 
             stringBuilder.BeginGroup();
 
-            if (!ApproximatelyEqual(dryMass, wetMass) && (!ApproximatelyEqual(dryMass, baseDryMass) || !ApproximatelyEqual(wetMass, baseWetMass)))
+            if (showWetMass)
             {
                 stringBuilder.Append("<b>{0}:</b> {1} {2}", SwitcherSubtypeDescriptionGenerator_Mass, SwitcherSubypeDescriptionGenerator_MassTons(dryMass, "0.###"), SwitcherSubtypeDescriptionGenerator_TankEmpty);
                 if (!ApproximatelyZero(dryMassDifference) && !ApproximatelyEqual(dryMassDifference, wetMassDifference)) stringBuilder.Append(FormatMassDifference(dryMassDifference));
@@ -146,14 +160,14 @@ namespace B9PartSwitch.UI
                 if (!ApproximatelyZero(wetMassDifference)) stringBuilder.Append(FormatMassDifference(wetMassDifference));
                 stringBuilder.AppendLine();
             }
-            else if (!ApproximatelyEqual(dryMass, baseDryMass))
+            else if (showDryMass)
             {
                 stringBuilder.Append("<b>{0}:</b> {1}", SwitcherSubtypeDescriptionGenerator_Mass, SwitcherSubypeDescriptionGenerator_MassTons(dryMass, "0.###"));
                 if (!ApproximatelyZero(dryMassDifference)) stringBuilder.Append(FormatMassDifference(dryMassDifference));
                 stringBuilder.AppendLine();
             }
 
-            if (!ApproximatelyEqual(dryCost, wetCost) && (!ApproximatelyEqual(dryCost, baseDryCost) || !ApproximatelyEqual(wetCost, baseWetCost)))
+            if (showWetCost)
             {
                 stringBuilder.Append("<b>{0}:</b> {1:0.#} {2}", SwitcherSubtypeDescriptionGenerator_Cost, dryCost, SwitcherSubtypeDescriptionGenerator_TankEmpty);
                 if (!ApproximatelyZero(dryCostDifference) && !ApproximatelyEqual(dryCostDifference, wetCostDifference)) stringBuilder.Append(FormatCostDifference(dryCostDifference));
@@ -161,7 +175,7 @@ namespace B9PartSwitch.UI
                 if (!ApproximatelyZero(wetCostDifference)) stringBuilder.Append(FormatCostDifference(wetCostDifference));
                 stringBuilder.AppendLine();
             }
-            else if (!ApproximatelyEqual(dryCost, baseDryCost))
+            else if (showDryCost)
             {
                 stringBuilder.Append("<b>{0}:</b> {1:#.#}", SwitcherSubtypeDescriptionGenerator_Cost, dryCost);
                 if (!ApproximatelyZero(dryCostDifference)) stringBuilder.Append(FormatCostDifference(dryCostDifference));

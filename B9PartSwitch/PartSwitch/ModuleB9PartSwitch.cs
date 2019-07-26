@@ -113,7 +113,13 @@ namespace B9PartSwitch
         public bool ManagesTransforms => ManagedTransforms.Any();
         public bool ManagesNodes => ManagedNodes.Any();
         public bool ManagesResources => subtypes.Any(s => !s.tankType.IsStructuralTankType);
+
+        public bool ChangesDryMass => subtypes.Any(s => s.ChangesDryMass);
+        public bool ChangesResourceMass => subtypes.Any(s => s.tankType.ChangesResourceMass);
         public bool ChangesMass => subtypes.Any(s => s.ChangesMass);
+
+        public bool ChangesDryCost => subtypes.Any(s => s.ChangesDryCost);
+        public bool ChangesResourceCost => subtypes.Any(s => s.tankType.ChangesResourceCost);
         public bool ChangesCost => subtypes.Any(s => s.ChangesCost);
 
         public float Scale => scale;

@@ -130,7 +130,9 @@ namespace B9PartSwitch
         public IEnumerable<string> ResourceNames => tankType.ResourceNames;
         public IEnumerable<string> NodeIDs => nodes.Select(n => n.id);
 
+        public bool ChangesDryMass => addedMass != 0 || tankType.tankMass != 0;
         public bool ChangesMass => (addedMass != 0f) || tankType.ChangesMass;
+        public bool ChangesDryCost => addedCost != 0 || tankType.tankCost != 0;
         public bool ChangesCost => (addedCost != 0f) || tankType.ChangesCost;
 
         public IEnumerable<object> PartAspectLocks => aspectLocks.All();
