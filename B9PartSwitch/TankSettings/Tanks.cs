@@ -153,9 +153,22 @@ namespace B9PartSwitch
                 primaryColor = ResourceColors.LqdHydrogen;
                 secondaryColor = ResourceColors.Oxidizer;
             }
+            else if (resources.Count == 1 && resources[0].ResourceName == "LqdMethane")
+            {
+                primaryColor = ResourceColors.LqdMethane;
+            }
+            else if (resources.Count == 2 && resources[0].ResourceName == "LqdMethane" && resources[1].ResourceName == "Oxidizer")
+            {
+                primaryColor = ResourceColors.LqdMethane;
+                secondaryColor = ResourceColors.Oxidizer;
+            }
             else if (resources.Count == 1 && resources[0].ResourceName == "Oxidizer")
             {
                 primaryColor = ResourceColors.Oxidizer;
+            }
+            else if (resources.Count == 1 && resources[0].ResourceName == "Ore")
+            {
+                primaryColor = ResourceColors.Ore;
             }
         }
     }

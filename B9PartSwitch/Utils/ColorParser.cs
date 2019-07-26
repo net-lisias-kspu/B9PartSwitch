@@ -34,10 +34,12 @@ namespace B9PartSwitch.Utils
 
             namedColors.Add("ResourceColorLiquidFuel", ResourceColors.LiquidFuel);
             namedColors.Add("ResourceColorLqdHydrogen", ResourceColors.LqdHydrogen);
+            namedColors.Add("ResourceColorLqdMethane", ResourceColors.LqdMethane);
             namedColors.Add("ResourceColorOxidizer", ResourceColors.Oxidizer);
             namedColors.Add("ResourceColorMonoPropellant", ResourceColors.MonoPropellant);
             namedColors.Add("ResourceColorElectricChargePrimary", ResourceColors.ElectricChargePrimary);
             namedColors.Add("ResourceColorElectricChargeSecondary", ResourceColors.ElectricChargeSecondary);
+            namedColors.Add("ResourceColorOre", ResourceColors.Ore);
         }
 
         public static Color Parse(string colorStr)
