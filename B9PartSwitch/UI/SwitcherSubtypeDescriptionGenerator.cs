@@ -106,9 +106,7 @@ namespace B9PartSwitch.UI
 
             stringBuilder.BeginGroup();
 
-            bool hasParentResources = subtype.volumeAddedToParent > 0 && (module.Parent?.CurrentTankType.resources.Count > 0);
-
-            if (subtype.tankType.resources.Count > 0 || hasParentResources)
+            if (subtype.tankType.resources.Count > 0 || parentResources.Length > 0)
             {
                 stringBuilder.AppendLine("<b>{0}:</b>", SwitcherSubtypeDescriptionGenerator_Resources);
                 foreach (TankResource resource in subtype.tankType)
