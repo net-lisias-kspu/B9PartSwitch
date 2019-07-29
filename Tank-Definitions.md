@@ -7,6 +7,8 @@ Tank types are defined by nodes called `B9_TANK_TYPE` at the root level of a con
 ### Fields
 
 * **`name`** - Name of this tank type (will be used to reference it from subtypes). Make it something descriptive and possible specific to your mod. Duplicates won't be loaded. Should not contain any spaces for easy ModuleManager access
+* **`primaryColor`** - Color to use on the left side of the switching UI button. If not specified, it will attempt to pick a color based on common resource combinations.  See [Valid Color Formats](Valid-Color-Formats) for a list of ways to specify a color.
+* **`secondaryColor`** - Color to use on the right side of the switching UI button. If not specified, it will attempt to pick a color based on common resource combinations.  See [Valid Color Formats](Valid-Color-Formats) for a list of ways to specify a color.
 * **`tankMass`** - Mass that this tank has, per unit of volume
 * **`tankCost`** - Cost that this tank has, per unit of volume **NOTE**: B9PartSwitch adds the cost of any resources, so there is no need to add the resource cost here as in stock tanks
 * **`percentFilled`** - The percentage that this tank type's resources should be filled (default 100%). Can be overridden on the subtype or on the individual resources
