@@ -57,6 +57,10 @@ Subtypes can also define the following nodes:
 * **`NODE`** - Allows attach nodes on the part to be moved.  If a node is moved on some subtypes but not others, the subtypes that don't specify a position will use the attach node's default position.
     * `name` - the id of the attach node.  If the attach node is `node_stack_top01` you would have `name = top01`
     * `position` - the new position of the attach node, specified as x, y, z coordinates.
+* **`TRANSFORM`** - Allows transforms to be modified
+    * `name` - the name of the transform to be modified
+    * `positionOffset` - x, y, z vector to offset the transform's local position by.  Any number of modules can modify this on the same transform.
+    * `rotationOffset` - x, y, z rotation vector (in degrees) to offset the transform's local rotation by.  Only one module can modify this on a particular transform.
 
 ## Multiple Modules on the same Part
 
