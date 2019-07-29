@@ -6,8 +6,6 @@
 * **`baseVolume`** - The volume of tanks in this module, in KSP volume units (i.e. units of `LiquidFuel`). Subtypes may modify this volume
 * **`switcherDescription`** - A description of the switcher which is used in the part's right click menu in the editor. Default: "Subtype". Other examples: "Tank", "Top Nodes".  Should generally be kept short and descriptive as a single control contains this, the subtype title, and the controls to switch subtypes.
 * **`switcherDescriptionPlural`** - Describes the switcher/subtypes in the part catalog. Default: "Subtypes", which would become a description of "3 Subtypes" (or whatever number).
-* **`primaryColor`** - Color to use on the left side of the switching UI button.  If not specified, it will use the tank type's primary color.  If that isn't specified (or determined based on resources), it will be white.
-* **`secondaryColor`** - Color to use on the right side of the switching UI button.  If not specified, it will use the tank type's secondary color.  If that isn't specified (or determined based on resources), it will use the subtype's primary color (including tank/resource color).  If that isn't specified, it will be gray.
 * **`affectDragCubes`** - Whether the part's drag cubes should be re-calculated when switching the subtype. Defaults to `true`, however, drag cubes will never be re-calculated if no transforms/models are switched on subtypes. Should be set to `false` if transforms/models are switched but they do not differ significantly in shape.
 * **`affectFARVoxels`** - If FerramAerospaceResearch is installed, this affects whether vessel re-voxelization should be triggered when switching the subtype. Defaults to `true`, however, re-voxelization will never be triggered if no transforms/models are switched on subtypes. Should be set to `false` if transforms/models are switched but they do not differ significantly in shape.
 * **`parentID`** - `moduleID` of another `ModuleB9PartSwitch` - subtypes of this module can add volume to the "parent" module via `volumeAddedToParent`
@@ -20,6 +18,8 @@ Each node named `SUBTYPE` defines a different subtype. Subtypes have the followi
 
 * **`name`** - Unique name for the subtype. Shouldn't contain any spaces for easy ModuleManager access
 * **`title`** - Human-readable name for the subtype. Will be filled from `name` if blank.
+* **`primaryColor`** - Color to use on the left side of the switching UI button.  If not specified, it will use the tank type's primary color.  If that isn't specified (or determined based on resources), it will be white.
+* **`secondaryColor`** - Color to use on the right side of the switching UI button.  If not specified, it will use the tank type's secondary color.  If that isn't specified (or determined based on resources), it will use the subtype's primary color (including tank/resource color).  If that isn't specified, it will be gray.
 * **`addedMass`** - Mass that is added to the part by this subtype (in addition to tank and resource mass).
 * **`addedCost`** - Cost that is added to the part by this subtype (in addition to tank and resource cost).
 * **`volumeAdded`** - Tank volume added by this subtype (added on top of the module's `baseVolume`)
