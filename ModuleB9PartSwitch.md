@@ -18,8 +18,10 @@ Each node named `SUBTYPE` defines a different subtype. Subtypes have the followi
 
 * **`name`** - Unique name for the subtype. Shouldn't contain any spaces for easy ModuleManager access
 * **`title`** - Human-readable name for the subtype. Will be filled from `name` if blank.
-* **`primaryColor`** - Color to use on the left side of the switching UI button.  If not specified, it will use the tank type's primary color.  If that isn't specified (or determined based on resources), it will be white.
-* **`secondaryColor`** - Color to use on the right side of the switching UI button.  If not specified, it will use the tank type's secondary color.  If that isn't specified (or determined based on resources), it will use the subtype's primary color (including tank/resource color).  If that isn't specified, it will be gray.
+* **`primaryColor`** - Color to use on the left side of the switching UI button.  If not specified, it will use the tank type's primary color.  If that isn't specified (or determined based on resources), it will be white.  See [Valid Color Formats](Valid-Color-Formats) for a list of ways to specify a color.
+* **`secondaryColor`** - Color to use on the right side of the switching UI button.  If not specified, it will use the tank type's secondary color.  If that isn't specified (or determined based on resources), it will use the subtype's primary color (including tank/resource color).  If that isn't specified, it will be gray.  See [Valid Color Formats](Valid-Color-Formats) for a list of ways to specify a color.
+* **`descriptionSummary`** - text about the subtype that appears in the tooltip before automatically generated info about resources, mass, cost, etc.  Keep it brief.
+* **`descriptionDetail`** - text about the subtype that appears in the tooltip after automatically generated info.  Go wild with detailed information!
 * **`addedMass`** - Mass that is added to the part by this subtype (in addition to tank and resource mass).
 * **`addedCost`** - Cost that is added to the part by this subtype (in addition to tank and resource cost).
 * **`volumeAdded`** - Tank volume added by this subtype (added on top of the module's `baseVolume`)
