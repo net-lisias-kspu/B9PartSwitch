@@ -22,6 +22,8 @@ Each node named `SUBTYPE` defines a different subtype. Subtypes have the followi
 * **`secondaryColor`** - Color to use on the right side of the switching UI button.  If not specified, it will use the tank type's secondary color.  If that isn't specified (or determined based on resources), it will use the subtype's primary color (including tank/resource color).  If that isn't specified, it will be gray.  See [Valid Color Formats](Valid-Color-Formats) for a list of ways to specify a color.
 * **`descriptionSummary`** - text about the subtype that appears in the tooltip before automatically generated info about resources, mass, cost, etc.  Keep it brief.
 * **`descriptionDetail`** - text about the subtype that appears in the tooltip after automatically generated info.  Go wild with detailed information!
+* **`upgradeRequired`** - name of a `PARTUPGRADE` that is required to unlock the subtype
+* **`defaultSubtypePriority`** - number that determines what the default subtype is based on what's unlocked.  The unlocked subtype with the highest priority will be the default.  The default value for this is zero.  Any number, positive or negative, decimal or whole, is accepted.
 * **`addedMass`** - Mass that is added to the part by this subtype (in addition to tank and resource mass).
 * **`addedCost`** - Cost that is added to the part by this subtype (in addition to tank and resource cost).
 * **`volumeAdded`** - Tank volume added by this subtype (added on top of the module's `baseVolume`)
@@ -57,12 +59,19 @@ Subtypes can also define the following nodes:
   * If no `transform` or `baseTransform` is specified, it will look for textures to switch on the entire part
 * **`RESOURCE`** - Resources can be specified here, or if the resource already exists on the tank type, any fields specified here will override those on the tank type.  The allowed fields can be found on the [[Tank-Definitions]] page
 * **`NODE`** - Allows attach nodes on the part to be moved.  If a node is moved on some subtypes but not others, the subtypes that don't specify a position will use the attach node's default position.
-    * `name` - the id of the attach node.  If the attach node is `node_stack_top01` you would have `name = top01`
-    * `position` - the new position of the attach node, specified as x, y, z coordinates.
+  * `name` - the id of the attach node.  If the attach node is `node_stack_top01` you would have `name = top01`
+  * `position` - the new position of the attach node, specified as x, y, z coordinates.
 * **`TRANSFORM`** - Allows transforms to be modified
-    * `name` - the name of the transform to be modified
-    * `positionOffset` - x, y, z vector to offset the transform's local position by.  Any number of modules can modify this on the same transform.
-    * `rotationOffset` - x, y, z rotation vector (in degrees) to offset the transform's local rotation by.  Only one module can modify this on a particular transform.
+  * `name` - the name of the transform to be modified
+  * `positionOffset` - x, y, z vector to offset the transform's local position by.  Any number of modules can modify this on the same transform.
+  * `rotationOffset` - x, y, z rotation vector (in degrees) to offset the transform's local rotation by.  Only one module can modify this on a particular transform.
+* **`MODULE`** - Allows other modules to be modified
+  * Please note that this feature is highly experimental, please talk to me before trying to use it
+  * **`IDENTIFIER`** - node that contains data used to identify the module being modified
+    * **`name`** - value is required, this is the subtype name
+    * Any other values can be used to identify the module, e.g. `engineID`, `experimentID`
+  * **`DATA`** - node containing data to be loaded into the target module
+  * **`moduleActive`** - if set to `false`, disable this module when this particular subtype is active
 
 ## Multiple Modules on the same Part
 
