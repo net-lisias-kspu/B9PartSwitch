@@ -28,7 +28,7 @@ Named colors are defined for common resources.  These may change slightly over t
 * ![LqdHydrogen](https://img.shields.io/static/v1?label=&message=%E2%80%A2&style=flat-square&color=99ccff) `ResourceColorLqdHydrogen`
 * ![LqdMethane](https://img.shields.io/static/v1?label=&message=%E2%80%A2&style=flat-square&color=00bf8f) `ResourceColorLqdMethane`
 * ![Oxidizer](https://img.shields.io/static/v1?label=&message=%E2%80%A2&style=flat-square&color=3399cc) `ResourceColorOxidizer`
-* ![MonoPropellant](https://img.shields.io/static/v1?label=&message=%E2%80%A2&style=flat-square&color=ffffcc) `ResouceColorMonoPropellant`
+* ![MonoPropellant](https://img.shields.io/static/v1?label=&message=%E2%80%A2&style=flat-square&color=ffffcc) `ResourceColorMonoPropellant`
 * ![XenonGas](https://img.shields.io/static/v1?label=&message=%E2%80%A2&style=flat-square&color=60a7bf) `ResourceColorXenonGas`
 * ![ElectricCharge Primary](https://img.shields.io/static/v1?label=&message=%E2%80%A2&style=flat-square&color=ffff33) `ResourceColorElectricChargePrimary`
 * ![ElectricCharge Secondary](https://img.shields.io/static/v1?label=&message=%E2%80%A2&style=flat-square&color=303030) `ResourceColorElectricChargeSecondary`
