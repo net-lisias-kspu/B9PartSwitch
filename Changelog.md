@@ -1,4 +1,4 @@
-# v2.16.0
+### v2.16.0
 
 * Fix description of attach node mover (`SUBTYPE` -> `NODE` -> `positionOffset`) for error messages
 * Allow node size to be modified
@@ -35,17 +35,17 @@
   * only applies to fields/events that don't already have a group
   * Cannot apply to `ModuleB9PartSwitch`, `ModuleB9PartInfo`, `ModuleB9AssignUiGroups` (itself), or `ModuleSimpleAdjustableFairing`
 
-# v2.15.2
+### v2.15.2
 
 * Fix `ModuleJettison` shrouds disappearing in flight (again)
 
-# v2.15.1
+### v2.15.1
 
 * Preserve drag cube weights when recalculating drag cubes
 * Don't call drag cube update methods that will be called by the flight integrator anyway
 * Ensure drag cubes aren't recalculated in flight regardless of configuration (it breaks things)
 
-# v2.15.0
+### v2.15.0
 
 * Recompile against KSP 1.9.1
 
@@ -97,7 +97,7 @@
 
 * Fix default subtype not activating on the icon
 
-# v2.11.0
+### v2.11.0
 
 * Allow switching UI to not be moved to the end of the part action window
   * ModuleB9PartSwitch now accepts `bottomOfWindow = false` which will leave it in place
@@ -110,13 +110,13 @@
 * Fix Texture switches getting stuck on copied parts
 * Fix node offsets not respecting part rotation when attempting to move the part with the switch
 
-# v2.10.1
+### v2.10.1
 
 * Add missing Russian localization keys
 * Fix surface attach node modifiers not actually doing anything
 * Fix surface attach node modifiers checking whether the part allows surface attach to it rather than to parent part
 
-# v2.10.0
+### v2.10.0
 
 * Use funds symbol for cost in tooltips
 * Fix vessel size including disabled objects
