@@ -53,7 +53,7 @@
 
 * Fix non-unique aspects complaining when present on more than one module
 * Generic material modifiers
-  * * `MATERIAL` nodes on subtypes
+  * `MATERIAL` nodes on subtypes
     * `transform` defines GameObjects on which to use renderers
     * `baseTransform` defines GameObjects and children on which to use renderers
     * `FLOAT` - modifies a float property
@@ -93,7 +93,7 @@
 * Stop moving the switcher to the end of the part action window
 * Remove `bottomOfWindow` paramter
 
-# v2.11.1
+### v2.11.1
 
 * Fix default subtype not activating on the icon
 
