@@ -11,6 +11,8 @@
 * **`parentID`** - `moduleID` of another `ModuleB9PartSwitch` - subtypes of this module can add volume to the "parent" module via `volumeAddedToParent`
 * **`switchInFlight`** - whether you can switch the subtype in flight (default false).  **NOTE** - there are no checks to ensure that you aren't adding of subtracting mass out of nowhere with this.  Please use carefully (pay attention to which tank types you use too)
 * **`advancedTweakablesOnly`** - whether this switcher is only available if you have advanced tweakables on (default false).  Note that this only disables the UI.
+* **`uiGroupName`** and **`uiGroupDisplayName`** - When defined, the switcher buttons will be in this UI group in the part's right click menu in the editor (only available for KSP 1.8 and newer).
+
 
 ## Subtypes
 
