@@ -1,3 +1,8 @@
+### v2.17.0
+
+* Recompile against KSP 1.10.1
+* Update Spanish localization, add German and Chinese localization
+
 ### v2.16.0
 
 * Fix description of attach node mover (`SUBTYPE` -> `NODE` -> `positionOffset`) for error messages
