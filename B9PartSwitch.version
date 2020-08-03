@@ -1,0 +1,18 @@
+{
+	"NAME"		: "B9 Part Switch /L Unofficial",
+	"URL"		: "https://raw.githubusercontent.com/net-lisias-kspu/B9PartSwitch/master/B9PartSwitch.version",
+	"DOWNLOAD"	: "https://github.com/net-lisias-kspu/B9PartSwitch/releases",
+	"CHANGE_LOG"	: "https://raw.githubusercontent.com/net-lisias-kspu/B9PartSwitch/master/CHANGE_LOG.md",
+	"CHANGE_LOG_URL": "https://raw.githubusercontent.com/net-lisias-kspu/B9PartSwitch/master/CHANGES.md",
+	"VERSION":{
+		"MAJOR":2,
+		"MINOR":17,
+		"PATCH":0,
+		"BUILD":1
+		},
+	"KSP_VERSION_MIN":{
+		"MAJOR":1,
+		"MINOR":4,
+		"PATCH":1
+		}
+}
