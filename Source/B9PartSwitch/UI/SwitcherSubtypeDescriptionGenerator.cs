@@ -94,14 +94,14 @@ namespace B9PartSwitch.UI
                     int leadingWhitespace = result.Length - result.TrimStart().Length;
                     int trailingWhitespace = result.Length - result.TrimEnd().Length;
                     if (leadingWhitespace != 0)
-                        Debug.LogError("[SwitcherSubtypeDescriptionGenerator] decription has leading whitespace: " + leadingWhitespace);
+                        Log.error("[SwitcherSubtypeDescriptionGenerator] decription has leading whitespace: {0}", leadingWhitespace);
                     if (trailingWhitespace != 0)
-                        Debug.LogError("[SwitcherSubtypeDescriptionGenerator] decription has trailing whitespace: " + trailingWhitespace);
+                        Log.error("[SwitcherSubtypeDescriptionGenerator] decription has trailing whitespace: {0}", trailingWhitespace);
                     return result;
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogException(ex);
+                    Log.error(ex, ex.Message);
                     return "<color=orange><b>error generating description</b></color>\n\nhere's some placeholder text instead";
                 }
                 finally

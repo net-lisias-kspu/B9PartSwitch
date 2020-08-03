@@ -448,7 +448,7 @@ namespace B9PartSwitch
                     catch (Exception ex)
                     {
                         OnInitializationError(ex.Message);
-                        Debug.LogException(ex);
+                        Log.error(ex, ex.Message);
                     }
                 }
             }
@@ -622,9 +622,9 @@ namespace B9PartSwitch
 
         #region Logging
 
-        private void LogWarning(string message) => Debug.LogWarning($"Warning on {this}: {message}");
+        private void LogWarning(string message) => Log.warn("Warning on {0}: {1}", this, message);
 
-        private void LogError(string message) => Debug.LogWarning($"Warning on {this}: {message}");
+        private void LogError(string message) => Log.warn("Error on {0}: {1}", this, message);
 
         #endregion
 

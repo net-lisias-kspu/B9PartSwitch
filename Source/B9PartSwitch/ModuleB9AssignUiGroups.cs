@@ -60,7 +60,7 @@ namespace B9PartSwitch
                 catch (Exception ex)
                 {
                     LogError("Exception when setting up UI group for MODULE");
-                    Debug.LogException(ex);
+                    Log.error(ex, "Exception when setting up UI group for MODULE");
                 }
             }
         }

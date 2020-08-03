@@ -55,11 +55,11 @@ namespace B9PartSwitch
 
                 if (tankTypes.ContainsKey(t.tankName))
                 {
-                    Debug.LogError($"B9TankSettings: The tank type {t.tankName} already exists");
+                    Log.error("B9TankSettings: The tank type {0} already exists", t.tankName);
                     continue;
                 }
                 tankTypes.Add(t.tankName, t);
-                Debug.Log($"B9TankSettings: registered tank type {t.tankName}");
+                Log.info("B9TankSettings: registered tank type {0}", t.tankName);
             }
 
             LoadedTankDefs = true;

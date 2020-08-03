@@ -49,7 +49,7 @@ namespace B9PartSwitch.UI
             else if (UIPartActionController.Instance.fieldPrefabs.Contains(partActionSubtypeSelectorPrefab)) return;
 
             UIPartActionController.Instance.fieldPrefabs.Add(partActionSubtypeSelectorPrefab);
-            Debug.Log("[B9PartSwitch.UI.UIPartActionSubtypeSelector] added prefab to UIPartActionController");
+            Log.info("[UI.UIPartActionSubtypeSelector] added prefab to UIPartActionController");
         }
 
         public override void Setup(UIPartActionWindow window, Part part, PartModule partModule, UI_Scene scene, UI_Control control, BaseField field)

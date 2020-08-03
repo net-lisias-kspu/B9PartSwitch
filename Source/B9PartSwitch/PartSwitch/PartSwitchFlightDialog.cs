@@ -16,7 +16,7 @@ namespace B9PartSwitch
             }
             catch (Exception ex)
             {
-                UnityEngine.Debug.LogException(ex);
+                Log.error(ex, ex.Message);
                 FatalErrorHandler.HandleFatalError(ex);
             }
         }

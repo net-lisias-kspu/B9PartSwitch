@@ -18,8 +18,7 @@ namespace B9PartSwitch
             }
             catch (Exception ex)
             {
-                Debug.LogError("Exception while trying to create locked subtype warning dialog");
-                Debug.LogException(ex);
+                Log.error(ex, "Exception while trying to create locked subtype warning dialog");
                 Application.Quit();
             }
         }
@@ -34,14 +33,14 @@ namespace B9PartSwitch
             }
             else if (allMessages.Count == MAX_MESSAGE_COUNT)
             {
-                Debug.LogError("[LockedSubtypeWarningHandler] Not displaying locked subtype warning because too many warnings have already been added:");
-                Debug.LogError(message);
+                Log.error("[LockedSubtypeWarningHandler] Not displaying locked subtype warning because too many warnings have already been added:");
+                Log.error(message);
                 allMessages.Add("(too many locked subtype messages to display)");
             }
             else
             {
-                Debug.LogError("[LockedSubtypeWarningHandler] Not displaying locked subtype warning because too many warnings have already been added:");
-                Debug.LogError(message);
+                Log.error("[LockedSubtypeWarningHandler] Not displaying locked subtype warning because too many warnings have already been added:");
+                Log.error(message);
                 return;
             }
 

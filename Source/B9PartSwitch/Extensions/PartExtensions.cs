@@ -143,8 +143,8 @@ namespace B9PartSwitch
             }
         }
 
-        public static void LogInfo(this Part part, object message) => Debug.Log($"[Part {part.name}] {message}");
-        public static void LogWarning(this Part part, object message) => Debug.LogWarning($"[WARNING] [Part {part.name}] {message}");
-        public static void LogError(this Part part, object message) => Debug.LogError($"[ERROR] [Part {part.name}] {message}");
+        public static void LogInfo(this Part part, object message) => Log.info("[Part {0}] {1}", part.name, message);
+        public static void LogWarning(this Part part, object message) => Log.warn("[Part {0}] {1}", part.name, message);
+        public static void LogError(this Part part, object message) => Log.error("[Part {0}] {1}", part.name, message);
     }
 }

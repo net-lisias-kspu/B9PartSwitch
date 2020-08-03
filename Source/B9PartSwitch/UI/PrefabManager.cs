@@ -17,7 +17,7 @@ namespace B9PartSwitch.UI
             catch (Exception ex)
             {
                 FatalErrorHandler.HandleFatalError(ex);
-                Debug.LogException(ex);
+                Log.error(ex, ex.Message);
             }
 
             Destroy(gameObject);
@@ -40,7 +40,7 @@ namespace B9PartSwitch.UI
                 catch (Exception ex)
                 {
                     FatalErrorHandler.HandleFatalError(ex);
-                    Debug.LogException(ex);
+                    Log.error(ex, ex.Message);
                 }
             }
 

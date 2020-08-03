@@ -18,8 +18,7 @@ namespace B9PartSwitch
             }
             catch (Exception ex)
             {
-                Debug.LogError("Exception while trying to create the serious warning dialog");
-                Debug.LogException(ex);
+                Log.error(ex, "Exception while trying to create the serious warning dialog");
                 Application.Quit();
             }
         }
@@ -34,14 +33,14 @@ namespace B9PartSwitch
             }
             else if (allMessages.Count == MAX_MESSAGE_COUNT)
             {
-                Debug.LogError("[SeriousWarningHandler] Not displaying serious warning because too many warnings have already been added:");
-                Debug.LogError(message);
+                Log.error("[SeriousWarningHandler] Not displaying serious warning because too many warnings have already been added:");
+                Log.error(message);
                 allMessages.Add("(too many warning messages to display)");
             }
             else
             {
-                Debug.LogError("[SeriousWarningHandler] Not displaying serious warning because too many warnings have already been added:");
-                Debug.LogError(message);
+                Log.error("[SeriousWarningHandler] Not displaying serious warning because too many warnings have already been added:");
+                Log.error(message);
                 return;
             }
 

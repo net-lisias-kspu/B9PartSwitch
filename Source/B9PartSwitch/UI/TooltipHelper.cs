@@ -14,7 +14,7 @@ namespace B9PartSwitch.UI
             if (subtypeInfoTooltip.IsNotNull()) return;
 
             subtypeInfoTooltip = CreateSubtypeInfoTooltipPrefab();
-            Debug.Log("[B9PartSwitch.UI.TooltipHelper] created subtype info tooltip prefab");
+            Log.info("[UI.TooltipHelper] created subtype info tooltip prefab");
 
         }
 

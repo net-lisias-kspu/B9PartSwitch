@@ -19,7 +19,7 @@ namespace B9PartSwitch.Fishbones
 
             try
             {
-                Debug.Log($"Generating field configuration for type {type}");
+                Log.info("Generating field configuration for type {0}", type);
                 NodeDataListBuilder builder = new NodeDataListBuilder(type);
                 list = builder.CreateList();
             }

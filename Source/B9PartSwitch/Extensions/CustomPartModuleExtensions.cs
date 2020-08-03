@@ -18,7 +18,7 @@ namespace B9PartSwitch
                 if (otherModule.IsNotNull())
                     yield return otherModule;
                 else
-                    Debug.LogWarning("No symmetry counterpart found on part counterpart");
+                    Log.warn("No symmetry counterpart found on part counterpart");
             }
         }
     }

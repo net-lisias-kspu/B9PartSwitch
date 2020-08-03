@@ -26,8 +26,7 @@ namespace B9PartSwitch
             }
             catch (Exception ex)
             {
-                Debug.LogError("Exception while trying to create the fatal exception dialog");
-                Debug.LogException(ex);
+                Log.error(ex, "Exception while trying to create the fatal exception dialog");
                 Application.Quit();
             }
         }
@@ -42,14 +41,14 @@ namespace B9PartSwitch
             }
             else if (allMessages.Count == MAX_MESSAGE_COUNT)
             {
-                Debug.LogError("[FatalExceptionHandler] Not displaying fatal error because too many errors have already been added:");
-                Debug.LogError(message);
+                Log.error("[FatalExceptionHandler] Not displaying fatal error because too many errors have already been added:");
+                Log.error(message);
                 allMessages.Add("(too many error messages to display)");
             }
             else
             {
-                Debug.LogError("[FatalExceptionHandler] Not displaying fatal error because too many errors have already been added:");
-                Debug.LogError(message);
+                Log.error("[FatalExceptionHandler] Not displaying fatal error because too many errors have already been added:");
+                Log.error(message);
                 return;
             }
 
