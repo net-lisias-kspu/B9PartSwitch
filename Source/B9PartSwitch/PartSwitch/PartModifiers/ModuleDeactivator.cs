@@ -31,6 +31,7 @@ namespace B9PartSwitch.PartSwitch.PartModifiers
         {
             module.enabled = false;
             module.isEnabled = false;
+            Log.detail("Module {0} was deactivated.", module);
         }
 
         protected virtual void MaybeDeactivate()
@@ -49,6 +50,7 @@ namespace B9PartSwitch.PartSwitch.PartModifiers
         {
             module.enabled = true;
             module.isEnabled = true;
+            Log.detail("Module {0} was activated.", module);
         }
     }
 }
