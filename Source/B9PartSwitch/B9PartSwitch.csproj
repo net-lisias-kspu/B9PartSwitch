@@ -176,6 +176,7 @@
     </Compile>
     <Compile Include="Log.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ModuleManagerSupport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Version.tt">
