@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2017-0528: 1.8.0 (blowfish) for KSP 1.3
+	+ Changes
+			- Recompile for KSP 1.3
+			- Drag cube re-rendering now supports IMultipleDragCubes
 * 2017-0206: 1.7.1 (blowfish) for KSP 1.2.2
 	+ Changes
 		- Fix an occasional NRE when building part info
