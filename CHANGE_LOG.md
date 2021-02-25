@@ -1,5 +1,7 @@
 # B9 Part Switch :: Change Log
 
+* 2018-0318: 2.2.0 (blowfish) for KSP 1.4.1
+	+ Recompile for KSP 1.4.1
 * 2018-0115: 2.1.1 (blowfish) for KSP 1.3.1
 	+ Fix texture replacements being reset when drag cubes are rendered
 	+ Fix battery tank type having 100x too much electric charge, bring mass in-line with stock
