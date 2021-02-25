@@ -1,5 +1,11 @@
 # B9 Part Switch :: Change Log
 
+* 2016-0506: 1.1.4 (blowfish) for KSP 1.1.2
+	+ Changes
+		- Don't remove FSfuelSwitch or InterstellarFuelSwitch if ModuleB9PartSwitch doesn't manage resources
+		- Defer rendering drag cubes until part has been attached (fixes flickering in editor)
+		- Avoid firing events multiple times when symmetric parts present
+		- Various internal changes
 * 2016-0503: 1.1.3 (blowfish) for KSP 1.1.2
 	+ Changes
 		- Recompile against KSP 1.1.2
