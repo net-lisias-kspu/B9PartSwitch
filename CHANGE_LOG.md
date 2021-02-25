@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2017-0206: 1.7.1 (blowfish) for KSP 1.2.2
+	+ Changes
+		- Fix an occasional NRE when building part info
 * 2017-0202: 1.7.0 (blowfish) for KSP 1.2.2
 	+ Changes
 		- Allow "child" part switch modules to modify volume of "parent" module
