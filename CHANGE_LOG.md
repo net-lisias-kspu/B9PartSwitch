@@ -1,5 +1,14 @@
 # B9 Part Switch :: Change Log
 
+* 2017-1116: 2.0.0 (blowfish) for KSP 1.3.1
+	+ Only match on exact attach node id
+	+ When switching in flight, resources should always start empty
+	+ Allow individual subtypes to not allow switching in flight via `allowSwitchInFlight` field
+	+ Allow `ModuleB9PartSwitch` to have its GUI hidden if it has `advancedTweakablesOnly = true` and advanced tweakables are disabled
+	+ Better error handling if resource of tank type does not exist (show error dialog in game and force the user to quit)
+	+ Fix .version file not being able to be parsed by KSP-AVC
+	+ Move remote .avc file from bintray to s3
+	+ Add back assembly guid (accidentally removed a while ago)
 * 2017-1008: 1.10.0 (blowfish) for KSP 1.3.1
 	+ Add new GUI that allows selecting subtype from a list
 	+ Allow switching in flight via switchInFlight parameter (uses new GUI)
