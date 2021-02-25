@@ -1,5 +1,40 @@
 # B9 Part Switch :: Change Log
 
+* 2020-0331: 2.16.0 (blowfish) for KSP 1.9.1
+	+ Fix description of attach node mover (`SUBTYPE` -> `NODE` -> `positionOffset`) for error messages
+	+ Allow node size to be modified
+		- `SUBTYPE` -> `NODE` -> `size`
+		- Takes an integer
+		- Will scale with TweakScale (and round to the nearest integer)
+	+ Allow more flexible name matching in many places
+		- If it starts and ends with `/`, treat it as a regular expression
+		- If it contains `*` or `?`, treat those as wildcards (anything or one character respectively)
+		- Otherwise treat it as a normal string
+			- If it starts with `\`, the next character is `/`, and it ends with `/`, eliminate the leading `\`
+		- Implemented in the following places:
+			- attach node modifier node name (`SUBTYPE` -> `NODE` -> `name`)
+			- transform toggle name (`SUBTYPE` -> `transform`)
+			- node toggler name (`SUBTYPE` -> `node`)
+			- material modifier transform names (`SUBTYPE` -> `MATERIAL` -> `transform`/`baseTransform`)
+			- texture modifier transform names (`SUBTYPE` -> `TEXTURE` -> `transform`/`baseTransform`)
+			- module modifier name (`SUBTYPE` -> `MODULE` -> `IDENTIFIER` -> `name`)
+			- transform modifier transform names (`SUBTYPE` -> `TRANSFORM` -> `name`)
+	+ Implement custom handling for `ModuleRCSFX`
+		- Disable unused effects when switching based on `runningEffectName`
+	+ Fix transforms not getting shown/hidden properly after another module updates the model
+	+ Allow `ModuleB9PartSwitch` to have its fields and events placed in a group:
+		- `uiGroupName` - unique identifier of the group
+		- `uiGroupDisplayName` - human readable name of the group to show in the UI
+	+ New module for assigning PAW groups on other modules: `ModuleB9AssignUiGroups`
+		- takes one or more `MODULE` nodes that each identify a module to have its UI group assigned
+			- each one must have an `IDENTIFIER` node to identify the module
+				- it must have a `name` which is the name of the module (wildcards and regex are allowed)
+				- it can have any other fields that uniquely identify the module
+				- This is the same as the `IDENTIFIER` in a module switcher
+		- `uiGroupName` - unique identifier of the group
+		- `uiGroupDisplayName` - human readable name of the group to show in the UI
+		- only applies to fields/events that don't already have a group
+		- Cannot apply to `ModuleB9PartSwitch`, `ModuleB9PartInfo`, `ModuleB9AssignUiGroups` (itself), or `ModuleSimpleAdjustableFairing`
 * 2020-0328: 2.15.2 (blowfish) for KSP 1.9.1
 	+ Fix `ModuleJettison` shrouds disappearing in flight (again)
 * 2020-0328: 2.15.1 (blowfish) for KSP 1.9.1
