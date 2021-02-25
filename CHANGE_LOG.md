@@ -1,5 +1,11 @@
 # B9 Part Switch :: Change Log
 
+* 2016-0526: 1.3.0 (blowfish) for KSP 1.1.2
+	+ Changes
+		- Do not destroy incompatible fuel switchers.  Instead, disable fuel switching
+		- Allow part's crash tolerance to be edited
+		- Add info module to display changes to part in the info window.  Only displays things that can be changed.
+		- Various internal changes
 * 2016-0520: 1.2.0 (blowfish) for KSP 1.1.2
 	+ Changes
 		- Support TweakScale integration
