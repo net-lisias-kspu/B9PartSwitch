@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2016-0612: 1.4.1 (blowfish) for KSP 1.1.2
+	+ Changes
+		- Fix bug where we were setting maxTemp when we should have been setting skinMaxTemp or crashTolerance
 * 2016-0611: 1.4.0 (blowfish) for KSP 1.1.2
 	+ Changes
 		- Find best subtype intelligently
