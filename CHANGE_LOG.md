@@ -1,5 +1,11 @@
 # B9 Part Switch :: Change Log
 
+* 2018-1201: 2.5.1 (blowfish) for KSP 1.5.1
+	+ Moved stack nodes now respect `scale`, `rescaleFactor`, and TweakScale
+	+ Moved surface attach node now respects `scale` and `rescaleFactor`
+	+ When only one subtype is present, disable switching GUI and display subtype title as non-interactable string
+	+ Downgrade incompatible resource switching module to a warning and disable B9 resource switching in that case
+	+ French localization
 * 2018-1117: 2.5.0 (blowfish) for KSP 1.5.1
 		- Allow moving stack nodes
 			- Within a `SUBTYPE`, `NODE` nodes take a `name` (node ID) and a `position` (x, y, z position of the node)
