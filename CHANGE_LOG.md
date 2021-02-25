@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2017-1008: 1.10.0 (blowfish) for KSP 1.3.1
+	+ Add new GUI that allows selecting subtype from a list
+	+ Allow switching in flight via switchInFlight parameter (uses new GUI)
 * 2017-0702: 1.9.0 (blowfish) for KSP 1.3
 	+ Add stackSymmetry part field to subtypes
 * 2017-0620: 1.8.1 (blowfish) for KSP 1.3
