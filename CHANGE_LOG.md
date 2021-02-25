@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2020-0729: 2.17.0 (blowfish) for KSP 1.10.1
+	+ v2.17.0
+		- Recompile against KSP 1.10.1
+		- Update Spanish localization, add German and Chinese localization
 * 2020-0331: 2.16.0 (blowfish) for KSP 1.9.1
 	+ Fix description of attach node mover (`SUBTYPE` -> `NODE` -> `positionOffset`) for error messages
 	+ Allow node size to be modified
