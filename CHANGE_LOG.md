@@ -1,5 +1,7 @@
 # B9 Part Switch :: Change Log
 
+* 2019-0724: 2.8.1 (blowfish) for KSP 1.7.3
+	+ Recompile against KSP 1.7.3
 * 2019-0609: 2.8.0 (blowfish) for KSP 1.7.1
 	+ Recompile against KSP 1.7.1
 	+ Fix part action window showing removed resources in KSP 1.7.1
