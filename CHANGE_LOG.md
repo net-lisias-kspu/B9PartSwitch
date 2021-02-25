@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2017-0620: 1.8.1 (blowfish) for KSP 1.3
+	+ Changes
+			- Fix drag cubes being overwritten with defaults on root part in flight scene
+			- Fix vessel disappearing from map view if root part has a switcher that affects drag cubes
 * 2017-0528: 1.8.0 (blowfish) for KSP 1.3
 	+ Changes
 			- Recompile for KSP 1.3
