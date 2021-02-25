@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2016-0607: 1.3.1 (blowfish) for KSP 1.1.2
+	+ Changes
+		- Fix bug where having ModuleB9PartInfo on a root part would cause physics to break due to an exception (really a stock issue but no sense waiting for a fix)
 * 2016-0526: 1.3.0 (blowfish) for KSP 1.1.2
 	+ Changes
 		- Do not destroy incompatible fuel switchers.  Instead, disable fuel switching
