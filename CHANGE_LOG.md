@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2016-0623: 1.4.3 (blowfish) for KSP 1.1.3
+	+ Changes
+		- Recompile against KSP 1.1.3
+		- Remove some code which is unnecessary in KSP 1.1.3
 * 2016-0618: 1.4.2 (blowfish) for KSP 1.1.2
 	+ Changes
 		- Fix TweakScale interaction - resource amounts did not account for scaling (broken since v1.4.0)
