@@ -1,5 +1,11 @@
 # B9 Part Switch :: Change Log
 
+* 2018-1019: 2.4.4 (blowfish) for KSP 1.5.1
+	+ Recompile against KSP 1.5.1
+	+ Downgrade certain fatal errors to warnings
+		- The user will still get an on-screen message but it can be dismissed without closing the game
+		- Duplicate subtype names is now only a serious warning
+		- Subtype without a name is now only a serious warning
 * 2018-1017: 2.4.3 (blowfish) for KSP 1.5
 	+ Fix .version file again again
 * 2018-1017: 2.4.2 (blowfish) for KSP 1.5
