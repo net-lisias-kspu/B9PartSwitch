@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2017-0127: 1.6.1 (blowfish) for KSP 1.2.2
+	+ Changes
+		- Switch percentFilled priority to resource -> subtype -> tank type -> 100% since resources can be overridden on individual subtypes now
 * 2017-0125: 1.6.0 (blowfish) for KSP 1.2.2
 	+ Changes
 		- Allow tanks to be partially filled - percentFilled can be defined on the subtype, resource, or tank type (in decreasing order of priority), defaulting to completely full
