@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2019-0609: 2.8.0 (blowfish) for KSP 1.7.1
+	+ Recompile against KSP 1.7.1
+	+ Fix part action window showing removed resources in KSP 1.7.1
+	+ Add Russian localization
 * 2019-0417: 2.7.1 (blowfish) for KSP 1.7.0
 	+ Fix part into button being shown when there's no info to display
 	+ Provide more context for subtype initialization errors in the warning dialog
