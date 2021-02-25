@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2016-0428: 1.1.1 (blowfish) for KSP 1.1
+	+ Changes
+		- Fix resource cost not accounting for `unitsPerVolume` on the tank
 * 2016-0424: 1.1 (blowfish) for KSP 1.1
 	+ Changes
 		- KSP 1.1 compatibility
