@@ -1,5 +1,10 @@
 # B9 Part Switch :: Change Log
 
+* 2016-1015: 1.5.0 (blowfish) for KSP 1.2
+	+ Changes
+		- Update for KSP 1.2
+		- Add CoMOffset, CoPOffset, CoLOffset, CenterOfBuoyancy, CenterOfDisplacement to editable part fields
+		- Hopefully reduce GC allocation a little bit
 * 2016-0623: 1.4.3 (blowfish) for KSP 1.1.3
 	+ Changes
 		- Recompile against KSP 1.1.3
