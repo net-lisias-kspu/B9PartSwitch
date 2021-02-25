@@ -1,5 +1,28 @@
 # B9 Part Switch :: Change Log
 
+* 2019-0412: 2.7.0 (blowfish) for KSP 1.7.0
+	+ Compile for KSP 1.7.0
+	+ Remove `ModuleB9PropagateCopyEvents` from parts since KSP handles this correctly now
+		- Leave empty class so that KSP doesn't complain when loading craft/vessels
+	+ Subtype initialization errors now warn the user but allow the game to continue
+	+ Add fuzzy matching for attach node toggling
+		- `?` will match any one character, `*` will match anything (or nothing)
+		- All matching nodes will be switched
+	+ Allow moving and rotation of transforms
+		- Subtypes can now have `TRANSFORM` nodes
+			- Each one should nave a `name` which is the name of the transform
+			- Each one can have a `positionOffset = x, y, z` which is a local offset for that transform
+				- Any number of modules can modify a transform's position (it's additive)
+			- Each one can have a `rotationOffset = x, y, z` which is a local rotation offset
+				- Only one module can modify a transform's position
+	+ Remove KSP localization debug logging
+	+ Add Brazilian Portuguese localization
+	+ Localize switch subtype button
+	+ Fix texture switches incorrectly saying the current texture wasn't found when really the new texture wasn't found
+	+ Use more correct part names in some log messages
+	+ Allow subtypes to specify a mirror symmetry counterpart
+		- Subtypes now accept a `mirrorSymmetrySubtype` value which is the subtype name of the mirror symmetry subtype
+		- When placing the part in mirror symmetry, the symmetry counterpart will use this mirror symmetry subtype, otherwise it will use the normal subtype
 * 2019-0114: 2.6.0 (blowfish) for KSP 1.6.1
 	+ Recompile against KSP 1.6.1
 	+ Fix misspellings in fatal error and serious warning handlers
