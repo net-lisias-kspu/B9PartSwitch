@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2020-0328: 2.15.1 (blowfish) for KSP 1.9.1
+	+ Preserve drag cube weights when recalculating drag cubes
+	+ Don't call drag cube update methods that will be called by the flight integrator anyway
+	+ Ensure drag cubes aren't recalculated in flight regardless of configuration (it breaks things)
 * 2020-0326: 2.15.0 (blowfish) for KSP 1.9.1
 	+ Recompile against KSP 1.9.1
 * 2020-0325: 2.14.0 (blowfish) for KSP 1.8.1
