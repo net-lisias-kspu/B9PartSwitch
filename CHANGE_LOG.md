@@ -1,5 +1,11 @@
 # B9 Part Switch :: Change Log
 
+* 2016-0503: 1.1.3 (blowfish) for KSP 1.1.2
+	+ Changes
+		- Recompile against KSP 1.1.2
+		- Simplify part list info a bit
+		- Hopefully make some error messages clearer
+		- Various internal refactors and simplifications
 * 2016-0429: 1.1.2 (blowfish) for KSP 1.1.1
 	+ Changes
 		- Removed `FSmeshSwitch` and `InterstellarMeshSwitch` from incompatible modules.  Fuels switchers remain incompatible.
