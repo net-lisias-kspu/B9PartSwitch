@@ -1,5 +1,7 @@
 # B9 Part Switch :: Change Log
 
+* 2020-0328: 2.15.2 (blowfish) for KSP 1.9.1
+	+ Fix `ModuleJettison` shrouds disappearing in flight (again)
 * 2020-0328: 2.15.1 (blowfish) for KSP 1.9.1
 	+ Preserve drag cube weights when recalculating drag cubes
 	+ Don't call drag cube update methods that will be called by the flight integrator anyway
