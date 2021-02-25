@@ -1,5 +1,10 @@
 # B9 Part Switch :: Change Log
 
+* 2020-0123: 2.13.0 (blowfish) for KSP 1.8.1
+	+ Support changing `ModuleDeployableSolarPanel` `chargeRate`
+	+ Get rid of some useless debug messages related to UI prefabs
+	+ Fix UI breaking on switchers with tech restrictions if subtypes are unlocked out of order
+	+ Fix texture switches breaking on inactive subtypes when a part is duplicated
 * 2019-1104: 2.12.1 (blowfish) for KSP 1.8.1
 	+ Recompile against KSP 1.8.1
 * 2019-1104: 2.12.0 (blowfish) for KSP 1.8.0
