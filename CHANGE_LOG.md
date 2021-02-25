@@ -1,5 +1,15 @@
 # B9 Part Switch :: Change Log
 
+* 2016-0611: 1.4.0 (blowfish) for KSP 1.1.2
+	+ Changes
+		- Find best subtype intelligently
+			- If subtype name was previously set, use it to find the correct subtype (allows subtypes to be reordered without breaking craft)
+			- If name was not previously set or not found, but index was, use it (this allows transitioning from current setup and renaming subtypes if necessary)
+			- If index was not previously set, try to infer subtype based on part's resources (this allows easy transitioning from a non-switching setup)
+			- Finally, just use first subtype
+		- Add unit testing for subtype finding
+		- Get rid of some unnecessary logging in debug mode
+		- Refactor part switching a bit
 * 2016-0607: 1.3.1 (blowfish) for KSP 1.1.2
 	+ Changes
 		- Fix bug where having ModuleB9PartInfo on a root part would cause physics to break due to an exception (really a stock issue but no sense waiting for a fix)
