@@ -1,5 +1,7 @@
 # B9 Part Switch :: Change Log
 
+* 2017-0702: 1.9.0 (blowfish) for KSP 1.3
+	+ Add stackSymmetry part field to subtypes
 * 2017-0620: 1.8.1 (blowfish) for KSP 1.3
 	+ Changes
 			- Fix drag cubes being overwritten with defaults on root part in flight scene
