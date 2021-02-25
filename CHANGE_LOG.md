@@ -1,5 +1,7 @@
 # B9 Part Switch :: Change Log
 
+* 2018-1017: 2.4.3 (blowfish) for KSP 1.5
+	+ Fix .version file again again
 * 2018-1017: 2.4.2 (blowfish) for KSP 1.5
 	+ Fix .version file again
 * 2018-1016: 2.4.1 (blowfish) for KSP 1.5
