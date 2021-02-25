@@ -1,5 +1,11 @@
 # B9 Part Switch :: Change Log
 
+* 2018-1016: 2.4.0 (blowfish) for KSP 1.4.5
+	+ Recompile against KSP 1.5
+	+ Provide better context for fatal exceptions
+	+ A few incompatibilities that previously silently disabled functionality are now fatal errors
+	+ Add Spanish translation of built-in strings
+	+ Fire `onPartResourceListChange` when changing resources
 * 2018-0727: 2.3.3 (blowfish) for KSP 1.4.5
 	+ Recompile against KSP 1.4.5
 * 2018-0622: 2.3.2 (blowfish) for KSP 1.4.4
