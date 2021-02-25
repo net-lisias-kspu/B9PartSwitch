@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2019-0417: 2.7.1 (blowfish) for KSP 1.7.0
+	+ Fix part into button being shown when there's no info to display
+	+ Provide more context for subtype initialization errors in the warning dialog
 * 2019-0412: 2.7.0 (blowfish) for KSP 1.7.0
 	+ Compile for KSP 1.7.0
 	+ Remove `ModuleB9PropagateCopyEvents` from parts since KSP handles this correctly now
