@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2019-1104: 2.12.0 (blowfish) for KSP 1.8.0
+	+ Recompile against KSP 1.8.0
+	+ Stop moving the switcher to the end of the part action window
+	+ Remove `bottomOfWindow` paramter
 * 2019-1027: 2.11.1 (blowfish) for KSP 1.7.3
 	+ Fix default subtype not activating on the icon
 * 2019-1021: 2.11.0 (blowfish) for KSP 1.7.3
