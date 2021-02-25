@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2019-0930: 2.10.1 (blowfish) for KSP 1.7.3
+	+ Add missing Russian localization keys
+	+ Fix surface attach node modifiers not actually doing anything
+	+ Fix surface attach node modifiers checking whether the part allows surface attach to it rather than to parent part
 * 2019-0819: 2.10.0 (blowfish) for KSP 1.7.3
 	+ Use funds symbol for cost in tooltips
 	+ Fix vessel size including disabled objects
