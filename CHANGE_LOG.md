@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2016-0429: 1.1.2 (blowfish) for KSP 1.1.1
+	+ Changes
+		- Removed `FSmeshSwitch` and `InterstellarMeshSwitch` from incompatible modules.  Fuels switchers remain incompatible.
+		- Recompiled against KSP 1.1.1
 * 2016-0428: 1.1.1 (blowfish) for KSP 1.1
 	+ Changes
 		- Fix resource cost not accounting for `unitsPerVolume` on the tank
