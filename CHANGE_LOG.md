@@ -1,5 +1,7 @@
 # B9 Part Switch :: Change Log
 
+* 2019-1104: 2.12.1 (blowfish) for KSP 1.8.1
+	+ Recompile against KSP 1.8.1
 * 2019-1104: 2.12.0 (blowfish) for KSP 1.8.0
 	+ Recompile against KSP 1.8.0
 	+ Stop moving the switcher to the end of the part action window
