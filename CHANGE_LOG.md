@@ -1,5 +1,10 @@
 # B9 Part Switch :: Change Log
 
+* 2018-0501: 2.3.0 (blowfish) for KSP 1.4.3
+	+ Recompile against KSP 1.4.3
+	+ Remove a couple of hacky workarounds as fixes/improvements were added in KSP 1.4.3
+	+ Use resource display names rather than identifiers in module description
+	+ Extract all hard-coded UI strings into localization table
 * 2018-0411: 2.2.2 (blowfish) for KSP 1.4.2
 	+ Fix texture replacements getting locked in when loading a craft in the editor if a part up the hierarchy renders procedural drag cubes
 * 2018-0402: 2.2.1 (blowfish) for KSP 1.4.2
