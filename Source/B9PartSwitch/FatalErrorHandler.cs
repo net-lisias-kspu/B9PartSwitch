@@ -54,11 +54,13 @@ namespace B9PartSwitch
 
             if (dialog != null) dialog.Dismiss();
 
+            string errorMsg =  $"B9PartSwitch has encountered a fatal error and KSP needs to close.\n\n{string.Join("\n\n", allMessages.ToArray())}\n\nPlease see KSP's log for additional details";
+            Log.error(errorMsg);
             dialog = PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f),
                 new Vector2(0.5f, 0.5f),
                 new MultiOptionDialog(
                     "B9PartSwitchFatalError",
-                    $"B9PartSwitch has encountered a fatal error and KSP needs to close.\n\n{string.Join("\n\n", allMessages.ToArray())}\n\nPlease see KSP's log for additional details",
+                   errorMsg,
                     "B9PartSwitch - Fatal Error",
                     HighLogic.UISkin,
                     new Rect(0.5f, 0.5f, 500f, 60f),
