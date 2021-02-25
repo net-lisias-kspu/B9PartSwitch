@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2019-0114: 2.6.0 (blowfish) for KSP 1.6.1
+	+ Recompile against KSP 1.6.1
+	+ Fix misspellings in fatal error and serious warning handlers
 * 2018-1201: 2.5.1 (blowfish) for KSP 1.5.1
 	+ Moved stack nodes now respect `scale`, `rescaleFactor`, and TweakScale
 	+ Moved surface attach node now respects `scale` and `rescaleFactor`
