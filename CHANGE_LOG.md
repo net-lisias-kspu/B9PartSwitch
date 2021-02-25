@@ -1,5 +1,7 @@
 # B9 Part Switch :: Change Log
 
+* 2018-0411: 2.2.2 (blowfish) for KSP 1.4.2
+	+ Fix texture replacements getting locked in when loading a craft in the editor if a part up the hierarchy renders procedural drag cubes
 * 2018-0402: 2.2.1 (blowfish) for KSP 1.4.2
 	+ Recompile against KSP 1.4.2
 	+ Fix transforms incorrectly being disabled in the part icon if subtypes are in a particular order
