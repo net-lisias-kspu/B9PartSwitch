@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2018-0115: 2.1.1 (blowfish) for KSP 1.3.1
+	+ Fix texture replacements being reset when drag cubes are rendered
+	+ Fix battery tank type having 100x too much electric charge, bring mass in-line with stock
 * 2017-1130: 2.1.0 (blowfish) for KSP 1.3.1
 	+ Add texture switching
 		- Each subtype can now have `TEXTURE` nodes which take the following fields:
