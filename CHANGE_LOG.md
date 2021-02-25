@@ -1,5 +1,7 @@
 # B9 Part Switch :: Change Log
 
+* 2020-0326: 2.15.0 (blowfish) for KSP 1.9.1
+	+ Recompile against KSP 1.9.1
 * 2020-0325: 2.14.0 (blowfish) for KSP 1.8.1
 	+ Fix non-unique aspects complaining when present on more than one module
 	+ Generic material modifiers
