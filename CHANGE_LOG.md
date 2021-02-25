@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2018-0402: 2.2.1 (blowfish) for KSP 1.4.2
+	+ Recompile against KSP 1.4.2
+	+ Fix transforms incorrectly being disabled in the part icon if subtypes are in a particular order
+	+ Fix `transform` in a `TEXTURE` node looking for renderers in child transforms too
 * 2018-0318: 2.2.0 (blowfish) for KSP 1.4.1
 	+ Recompile for KSP 1.4.1
 * 2018-0115: 2.1.1 (blowfish) for KSP 1.3.1
