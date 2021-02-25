@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2017-0202: 1.7.0 (blowfish) for KSP 1.2.2
+	+ Changes
+		- Allow "child" part switch modules to modify volume of "parent" module
+		- Allow multiple modules to manage the same transform or node, only enable it if they all agree
 * 2017-0127: 1.6.1 (blowfish) for KSP 1.2.2
 	+ Changes
 		- Switch percentFilled priority to resource -> subtype -> tank type -> 100% since resources can be overridden on individual subtypes now
