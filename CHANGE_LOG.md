@@ -1,5 +1,10 @@
 # B9 Part Switch :: Change Log
 
+* 2018-1117: 2.5.0 (blowfish) for KSP 1.5.1
+		- Allow moving stack nodes
+			- Within a `SUBTYPE`, `NODE` nodes take a `name` (node ID) and a `position` (x, y, z position of the node)
+		- Fix log message for duplicated subtype names
+		- Fix texture switching behaving weirdly when copying a part in the editor
 * 2018-1029: 2.4.5 (blowfish) for KSP 1.5.1
 	+ Fix issues with resource switching and stock delta-v simulation code
 		- Exception when copying a part in the editor
