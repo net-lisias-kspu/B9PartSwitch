@@ -1,5 +1,10 @@
 # B9 Part Switch :: Change Log
 
+* 2016-1020: 1.5.1 (blowfish) for KSP 1.2
+	+ Changes
+		- Fix resource amounts displaying incorrectly in part tooltip
+		- Reformat module title in part list tooltip a bit
+		- Hopefully reduce GC some more
 * 2016-1015: 1.5.0 (blowfish) for KSP 1.2
 	+ Changes
 		- Update for KSP 1.2
