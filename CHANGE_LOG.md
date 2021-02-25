@@ -1,5 +1,9 @@
 # B9 Part Switch :: Change Log
 
+* 2018-1029: 2.4.5 (blowfish) for KSP 1.5.1
+	+ Fix issues with resource switching and stock delta-v simulation code
+		- Exception when copying a part in the editor
+		- Delta-v simulation was probably off as well
 * 2018-1019: 2.4.4 (blowfish) for KSP 1.5.1
 	+ Recompile against KSP 1.5.1
 	+ Downgrade certain fatal errors to warnings
