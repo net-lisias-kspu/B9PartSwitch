@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2016-1123: 1.5.2 (blowfish) for KSP 1.2.1
+	+ Changes
+		- Recompile against KSP 1.2.1
 * 2016-1020: 1.5.1 (blowfish) for KSP 1.2
 	+ Changes
 		- Fix resource amounts displaying incorrectly in part tooltip
