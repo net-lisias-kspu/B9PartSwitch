@@ -1,5 +1,7 @@
 # B9 Part Switch :: Change Log
 
+* 2018-0622: 2.3.2 (blowfish) for KSP 1.4.4
+	+ Recompile against KSP 1.4.4
 * 2018-0521: 2.3.1 (blowfish) for KSP 1.4.3
 	+ Fix ModuleJettison shroud disappearing in flight if used with a ModuleB9PartSwitch that affects drag cubes
 	+ Don't destroy info module in flight since that messes with module order
