@@ -1,5 +1,10 @@
 # B9 Part Switch :: Change Log
 
+* 2016-1209: 1.5.3 (blowfish) for KSP 1.2.2
+	+ Changes
+		- Recompile against KSP 1.2.2
+		- Remove useless warnings in the log
+		- A few internal changes
 * 2016-1123: 1.5.2 (blowfish) for KSP 1.2.1
 	+ Changes
 		- Recompile against KSP 1.2.1
