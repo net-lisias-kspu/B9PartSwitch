@@ -1,5 +1,10 @@
 # B9 Part Switch :: Change Log
 
+* 2016-0520: 1.2.0 (blowfish) for KSP 1.1.2
+	+ Changes
+		- Support TweakScale integration
+		- Allow plural switcher description (in part catalog) to be edited)
+		- Disable changing surface attach node size (problematic with Tweakscale)
 * 2016-0506: 1.1.4 (blowfish) for KSP 1.1.2
 	+ Changes
 		- Don't remove FSfuelSwitch or InterstellarFuelSwitch if ModuleB9PartSwitch doesn't manage resources
