@@ -1,5 +1,7 @@
 # B9 Part Switch :: Change Log
 
+* 2018-0727: 2.3.3 (blowfish) for KSP 1.4.5
+	+ Recompile against KSP 1.4.5
 * 2018-0622: 2.3.2 (blowfish) for KSP 1.4.4
 	+ Recompile against KSP 1.4.4
 * 2018-0521: 2.3.1 (blowfish) for KSP 1.4.3
