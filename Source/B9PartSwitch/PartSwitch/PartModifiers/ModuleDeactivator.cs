@@ -16,7 +16,7 @@ namespace B9PartSwitch.PartSwitch.PartModifiers
             this.parent = parent;
         }
 
-        public override string Description => $"module {module.ToString()} activated status";
+        public override string Description => $"module {module} activated status";
 
         public override void ActivateOnStartEditor() => Activate();
         public override void ActivateOnStartFlight() => Activate();
