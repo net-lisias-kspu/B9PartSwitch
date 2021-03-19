@@ -1,5 +1,8 @@
 # B9 Part Switch :: Change Log
 
+* 2021-0319: 2.18.0.1 (LisiasT) for KSP >= 1.7.1
+	+ Backporting last fixes from upstream: 
+		- Fix modules getting force-enabled when new data is loaded
 * 2021-0318: 2.18.0 (blowfish) for KSP 1.11.2
 	+ Recompile against KSP 1.11.2
 	+ Fix modules getting force-enabled when new data is loaded

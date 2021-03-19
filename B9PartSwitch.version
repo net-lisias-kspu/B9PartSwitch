@@ -6,7 +6,7 @@
 	"CHANGE_LOG_URL": "https://raw.githubusercontent.com/net-lisias-kspu/B9PartSwitch/master/CHANGES.md",
 	"VERSION":{
 		"MAJOR":2,
-		"MINOR":17,
+		"MINOR":18,
 		"PATCH":0,
 		"BUILD":1
 		},
