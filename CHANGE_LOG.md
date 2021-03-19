@@ -1,5 +1,11 @@
 # B9 Part Switch :: Change Log
 
+* 2021-0318: 2.18.0 (blowfish) for KSP 1.11.2
+	+ Recompile against KSP 1.11.2
+	+ Fix modules getting force-enabled when new data is loaded
+	+ Change remote AVC reference so that it notifies even if you change KSP
+	+ versions
+	+ Prevent exceptions caused by zombie parts
 * 2021-0225: 2.17.0.1 (LisiasT) for KSP >= 1.7.1
 	+ Using KSPe installment checks and Log facilities
 	+ Backporting to KSP 1.7.1
