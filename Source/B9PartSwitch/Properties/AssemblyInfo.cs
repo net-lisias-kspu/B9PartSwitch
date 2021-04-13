@@ -20,3 +20,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion(B9PartSwitch.Version.Number)]
 
 [assembly: KSPAssembly("B9PartSwitch", B9PartSwitch.Version.major, B9PartSwitch.Version.minor, B9PartSwitch.Version.patch)]
+[assembly: KSPAssemblyDependency("KSPe", 2, 2)]
+[assembly: KSPAssemblyDependency("KSPe.UI", 2, 2)]
