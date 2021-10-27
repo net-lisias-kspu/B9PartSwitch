@@ -1,8 +1,8 @@
-# B9 Part Switch /L Unofficial
+# B9 Part Switch /L Unleashed
 
 B9 Part Switch is a plugin that allows mods to make parts switchable, similar to Firespitter and Interstellar fuel switchers.  This mod doesn't do anything by itself, but provides a way for other mods to enable switching. 
 
-Unofficial fork by Lisias.
+[Unleashed](https://ksp.lisias.net/add-ons-unleashed/) fork by Lisias.
 
 
 ## In a Hurry

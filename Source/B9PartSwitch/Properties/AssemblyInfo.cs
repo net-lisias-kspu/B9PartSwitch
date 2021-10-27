@@ -2,13 +2,13 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("B9PartSwitch")]
+[assembly: AssemblyTitle("B9 Part Switch /L Unleashed")]
 [assembly: AssemblyDescription("A part switching module for KSP")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("L Aerospace/KSP Division")]
-[assembly: AssemblyProduct("B9PartSwitch /L Unofficial")]
-[assembly: AssemblyCopyright("© 2020 LisiasT")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany(B9PartSwitch.LegalMamboJambo.Company)]
+[assembly: AssemblyProduct(B9PartSwitch.LegalMamboJambo.Product)]
+[assembly: AssemblyCopyright(B9PartSwitch.LegalMamboJambo.Copyright)]
+[assembly: AssemblyTrademark(B9PartSwitch.LegalMamboJambo.Trademark)]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
