@@ -1,5 +1,7 @@
 # B9 Part Switch /L Unleashed :: Changes
 
+* 2021-1027: 2.18.0.3 (LisiasT) for KSP >= 1.7.1
+	+ Updating to KSPe v2.4 
 * 2021-0413: 2.18.0.2 (LisiasT) for KSP >= 1.7.1
 	+ Backporting last fixes from upstream: 
 		- Fix modules getting force-enabled when new data is loaded
