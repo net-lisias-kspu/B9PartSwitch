@@ -1,3 +1,7 @@
+### v2.19.1
+
+* Recompile against KSP 1.12.3
+
 ### v2.19.0
 
 * Recompile against KSP 1.12.2
