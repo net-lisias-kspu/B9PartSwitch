@@ -135,6 +135,9 @@ namespace B9PartSwitch
         public bool allowSwitchInFlight = true;
 
         [NodeData]
+        public bool allowSwitchFromInFlight = true;
+
+        [NodeData]
         public string mirrorSymmetrySubtype;
 
         #endregion
@@ -310,7 +313,7 @@ namespace B9PartSwitch
 
                 if (modifier is IPartAspectLock partAspectLockHolder)
                 {
-                    object partAspectLock = partAspectLockHolder;
+                    object partAspectLock = partAspectLockHolder.PartAspectLock;
                     if (aspectLocksOnOtherModules.Contains(partAspectLock))
                     {
                         OnInitializationError($"More than one module can't manage {modifier.Description}");
