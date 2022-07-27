@@ -35,7 +35,7 @@ using System.Collections.Generic;
 
 namespace B9PartSwitch
 {
-	public static class ModuleManagerSupport
+	public class ModuleManagerSupport : UnityEngine.MonoBehaviour
 	{
 		public static IEnumerable<string> ModuleManagerAddToModList()
 		{
