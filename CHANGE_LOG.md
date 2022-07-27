@@ -1,5 +1,9 @@
 # B9 Part Switch /L Unleashed :: Change Log
 
+* 2022-0320: 2.20.0.0 (blowfish) for KSP 1.12.3
+	+ Recompile against KSP 1.12.3
+	+ Add new allowSwitchFromInFlight option to subtypes, if a subtype with this set to true is selected it can't be switched off of in flight
+	+ Add Italian localization
 * 2021-1204: 2.19.0.0 (blowfish) for KSP 1.12.2
 	+ Recompile against KSP 1.12.2
 * 2021-1027: 2.18.0.3 (LisiasT) for KSP >= 1.7.1
