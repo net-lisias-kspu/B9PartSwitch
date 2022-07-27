@@ -1,20 +1,26 @@
 #!/usr/bin/env bash
 
+# see http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+IFS=$'\n\t'
 source ./CONFIG.inc
 
 clean() {
-	rm $FILE
+	rm -fR $FILE
 	if [ ! -d Archive ] ; then
-		rm -f Archive
 		mkdir Archive
 	fi
 }
 
-FILE=$PACKAGE-$VERSION$PROJECT_STATE.zip
+pwd=$(pwd)
+FILE=${pwd}/Archive/$PACKAGE-$VERSION${PROJECT_STATE}.zip
 echo $FILE
 clean
-zip $FILE "INSTALL.md"
+set +e
 zip -r $FILE ./GameData/* -x ".*"
 zip -r $FILE ./PluginData/* -x ".*"
-zip -d $FILE __MACOSX "**/.DS_Store"
-mv $FILE ./Archive
+zip -r $FILE ./Extras/* -x ".*"
+zip $FILE INSTALL.md
+zip -d $FILE "__MACOSX/*" "**/.DS_Store"
+set -e
+cd $pwd
