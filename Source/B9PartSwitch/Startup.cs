@@ -1,9 +1,8 @@
 ﻿/*
 	This file is part of B9PartSwitch /L Unleashed
-		© 2021 Lisias T : http://lisias.net <support@lisias.net>
+		© 2021-2022 LisiasT : http://lisias.net <support@lisias.net>
 
 	B9PartSwitch /L Unofficial is licensed as follows:
-
 		* LGPL 3.0 : https://www.gnu.org/licenses/lgpl-3.0.txt
 
 	B9PartSwitch /L Unleashed is distributed in the hope that it will be useful,
