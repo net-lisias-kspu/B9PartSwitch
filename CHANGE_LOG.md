@@ -1,5 +1,7 @@
 # B9 Part Switch /L Unleashed :: Change Log
 
+* 2021-1204: 2.19.0.0 (blowfish) for KSP 1.12.2
+	+ Recompile against KSP 1.12.2
 * 2021-1027: 2.18.0.3 (LisiasT) for KSP >= 1.7.1
 	+ Updating to KSPe v2.4 
 * 2021-0413: 2.18.0.2 (LisiasT) for KSP >= 1.7.1
