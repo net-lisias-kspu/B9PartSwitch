@@ -4,6 +4,7 @@ B9 Part Switch is a plugin that allows mods to make parts switchable, similar to
 
 [Unleashed](https://ksp.lisias.net/add-ons-unleashed/) fork by Lisias.
 
+**This fork *fully* suports KSP 1.7.1 to the newest!** ;)
 
 ## In a Hurry
 

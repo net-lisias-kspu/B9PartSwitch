@@ -1,9 +1,12 @@
 # B9 Part Switch /L Unleashed :: Changes
 
-* 2021-1027: 2.18.0.3 (LisiasT) for KSP >= 1.7.1
-	+ Updating to KSPe v2.4 
-* 2021-0413: 2.18.0.2 (LisiasT) for KSP >= 1.7.1
-	+ Backporting last fixes from upstream: 
-		- Fix modules getting force-enabled when new data is loaded
-* 2021-0319: 2.18.0.1 (LisiasT) for KSP >= 1.7.1
-	+ ***DITCHED*** due wrongly compilation against a beta release of KSPe.
+* 2022-0727: 2.20.0.1 (LisiasT) for KSP >= 1.7.1
+	+ Catches up with the (non nonsense) changes from upstream:
+		- 2.20.0.0:
+			- Add new allowSwitchFromInFlight option to subtypes, if a subtype with this set to true is selected it can't be switched off of in flight
+			- Add Italian localization
+	+ Still works from KSP 1.7.1 to newest. ;)
+* 2022-0320: 2.20.0.0 (blowfish) for KSP 1.12.3
+	+ Recompile against KSP 1.12.3
+	+ Add new allowSwitchFromInFlight option to subtypes, if a subtype with this set to true is selected it can't be switched off of in flight
+	+ Add Italian localization
