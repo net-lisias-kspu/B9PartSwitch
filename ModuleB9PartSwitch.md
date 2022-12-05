@@ -68,6 +68,7 @@ Subtypes can also define the following nodes:
   * `name` - the name of the transform to be modified
   * `positionOffset` - x, y, z vector to offset the transform's local position by.  Any number of modules can modify this on the same transform.
   * `rotationOffset` - x, y, z rotation vector (in degrees) to offset the transform's local rotation by.  Only one module can modify this on a particular transform.
+  * `scaleOffset` - either a scalar or an x, y, z vector to scale the transform's local scale by. A scalar will be applied uniformly to all three axes.
 * **`MODULE`** - Allows other modules to be modified
   * Please note that this feature is highly experimental, please talk to me before trying to use it
   * **`IDENTIFIER`** - node that contains data used to identify the module being modified
